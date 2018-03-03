@@ -134,7 +134,7 @@ Please write your name in the brackets provided, before the task, if you wish to
 		g = 2  
 		should return a unique id for the specific, which will be used to index into the dict.  
 
-- () [id: 2] A task to initialize the graph by creating all the nodes and initializing all the possible variables, given a few inputs.  
+- (jude) [id: 2] A task to initialize the graph by creating all the nodes and initializing all the possible variables, given a few inputs.  
 ie, all the days, periods, teachers, subjects, groups, lessons given.  
 
 - () [id: 3] Creating all the basic implications (implications that define correctness)  
