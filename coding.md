@@ -142,6 +142,12 @@ Make some edges :-)
 All implications till page 10.
 Not the requirement implications.
 
+- () [id: 4] Creating correctness implications
+Make some edges :-)
+
+- () [id: 5] Creating requitement implications
+Make some edges :-)
+
 
 #NOTE
 This is still incomplete.  
