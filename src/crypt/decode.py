@@ -4,11 +4,11 @@ Objective: Give an encoded name, returns the set of key value pairs
 
 from encode import encode
 
-def decode(variable):
+def decode(variable, inter_seperator='.', intra_seprator='_'):
 	'''
 	This function decodes a given encoded variable
 	'''
-	var_components = [x.split('_') for x in variable.split('.')]
+	var_components = [x.split(intra_seprator) for x in variable.split(inter_seperator)]
 	component_dict = {}
 	for c in var_components:
 		if len(c) == 2:

@@ -2,7 +2,7 @@
 Objective: Give a unique var_name to a set of inputs
 '''
 
-def encode(var_def='x', **kwargs):
+def encode(var_def='x', inter_seperator='.', intra_seprator='_', **kwargs):
 	'''
 	This function encodes a given arguments into a proper variable
 	'''
@@ -10,7 +10,7 @@ def encode(var_def='x', **kwargs):
 	key_list = kwargs.keys()
 	key_list.sort()
 	for x in key_list:
-		encoded_var = encoded_var + '.' + str(x) + '_' + str(kwargs[x])
+		encoded_var = encoded_var + inter_seperator + str(x) + intra_seprator + str(kwargs[x])
 	return encoded_var
 
 
