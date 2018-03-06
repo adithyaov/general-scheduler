@@ -127,14 +127,14 @@ i(t, d, p)
 ### Tasks  
 Please write your name in the brackets provided, before the task, if you wish to take it :-).  
 
-- () [id: 1] A function(s) that takes in a set of inputs and returns a unique variable, in string format.  
+- (Adithya) [id: 1] A function(s) that takes in a set of inputs and returns a unique variable, in string format.  
 	eg.  
 		var_type = x'  
 		t = 1  
 		g = 2  
 		should return a unique id for the specific, which will be used to index into the dict.  
 
-- (jude) [id: 2] A task to initialize the graph by creating all the nodes and initializing all the possible variables, given a few inputs.  
+- (Adithya) [id: 2] A task to initialize the graph by creating all the nodes and initializing all the possible variables, given a few inputs.  
 ie, all the days, periods, teachers, subjects, groups, lessons given.  
 
 - () [id: 3] Creating all the basic implications (implications that define correctness)  
