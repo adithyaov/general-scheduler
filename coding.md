@@ -152,12 +152,11 @@ Make some edges :-)
 - () [id: 7] Creating requirement implications  
 Make some edges :-)  
 
--() [id: 8] Convert string to graphs ?
+- () [id: 8] Convert string to graphs ?
 
--() [id: 9] Graph to Z3 input               
+- () [id: 9] Graph to Z3 input               
 
---------------------------
-#indpendently
+#Indpendently
 -() [id: 10] decode Z3 output
 
 -() [id: 11] Gui front-end to receive input and to display output 
