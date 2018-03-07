@@ -22,7 +22,7 @@
 "A => B" can be representated as node "A" with a directed edge to node "B"  
 A graph can be represented as a dictionary.  
 eg. graph = {
-	"A": ["B", "C"],
+	"A": ["B", "C", ('or', ["E", "F"])],
 	"B": ["D"]
 }
 
