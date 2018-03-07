@@ -157,9 +157,9 @@ Make some edges :-)
 - () [id: 9] Graph to Z3 input               
 
 #Indpendently
--() [id: 10] decode Z3 output
+- () [id: 10] decode Z3 output
 
--() [id: 11] Gui front-end to receive input and to display output 
+- () [id: 11] Gui front-end to receive input and to display output 
 
   
 #NOTE  
