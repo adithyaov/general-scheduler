@@ -152,9 +152,9 @@ Make some edges :-)
 - () [id: 7] Creating requirement implications  
 Make some edges :-)  
 
-- () [id: 8] Convert string to graphs ?
+- (Mayank) [id: 8] Convert string to graphs ?
 
-- () [id: 9] Graph to Z3 input               
+- (Mayank) [id: 9] Graph to Z3 input               
 
 #Indpendently
 - () [id: 10] decode Z3 output
