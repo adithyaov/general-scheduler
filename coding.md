@@ -137,16 +137,29 @@ Please write your name in the brackets provided, before the task, if you wish to
 - (Adithya) [id: 2] A task to initialize the graph by creating all the nodes and initializing all the possible variables, given a few inputs.  
 ie, all the days, periods, teachers, subjects, groups, lessons given.  
 
-- () [id: 3] Creating all the basic implications (implications that define correctness)  
+- () [id: 3] Formalise input processing and representation
+
+- () [id: 4] Formalise conversion to implications based on input-representation (as strings ?)
+
+- () [id: 5] Creating all the basic implications (implications that define correctness)  
 Make some edges :-)  
 All implications till page 10.  
 Not the requirement implications.  
 
-- () [id: 4] Creating correctness implications  
+- () [id: 6] Creating correctness implications  
 Make some edges :-)  
 
-- () [id: 5] Creating requitement implications  
+- () [id: 7] Creating requirement implications  
 Make some edges :-)  
+
+- () [id: 8] Convert string to graphs ?
+
+- () [id: 9] Graph to Z3 input               
+
+#Indpendently
+- () [id: 10] decode Z3 output
+
+- () [id: 11] Gui front-end to receive input and to display output 
 
   
 #NOTE  
