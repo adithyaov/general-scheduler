@@ -1,5 +1,6 @@
 import numpy as np
 
+
 graph = {}
 
 num_t = 10
@@ -24,8 +25,9 @@ duration[t, s, g, n] = 2
 '''
 
 # Make zeros and change later, but this is test file, so whatever
-duration = np.ones([num_t, num_s, num_g, n_max])
-
+duration = np.zeros([num_t, num_s, num_g, n_max])
+duration[0,0,0,0] = 1
+duration[1,1,1,1] = 1
 '''
 node can be representated as ('x', t, s, g, n, d, p)
 graph will be the same but these tuples as nodes
@@ -174,15 +176,15 @@ print(len(graph.keys()))
 graph[('x', t, s, g, n, d, p)] = [('or', [...])]
 '''
 
-lesson_correctness = []
-for (t,s,g,n) in duration.keys():
-    lesson_correctness.append([('xtsgnd', t, s, g, n, d) for d in days])
+# lesson_correctness = []
+# for (t,s,g,n) in duration.keys():
+#     lesson_correctness.append([('xtsgnd', t, s, g, n, d) for d in days])
 
 
 # def single(t, s, g, n):
-    '''
-    Ensure atmost only one variable is satisfied
-    '''
+    # '''
+    # Ensure atmost only one variable is satisfied
+    # '''
 
     # for d1 in days:
     #     for p1 in periods[d1]:
