@@ -1,34 +1,6 @@
 import numpy as np
 
-graph = {}
-
-num_t = 1
-num_s = 1
-num_g = 1
-teachers = np.array(range(num_t))
-subjects = np.array(range(num_s))
-groups = np.array(range(num_g))
-n_max = 1
-days = range(6)
-periods = []
-for _ in days:
-	periods.append([0, 1, 2, 3, 4, 5])
-
-'''
-periods[2] = [0, 1, 2, 3, 4, 5] => 6 periods
-'''
-
-'''
-duration[t, s, g, n] = 2
-'''
-
-# Make zeros and change later, but this is test file, so whatever
-duration = np.zeros([num_t, num_s, num_g, n_max])
-
-'''
-node can be representated as ('x', t, s, g, n, d, p)
-graph will be the same but these tuples as nodes
-'''
+from var import *
 
 def bic0(t, s, g, n):
 	truth = [
@@ -132,16 +104,12 @@ def bic11(k, d, p):
 # initializing vars
 
 
-for t in teachers:
-	for s in subjects:
-		for g in groups:
-			for n in range(n_max):
-				if bic0(t, s, g, n): # Valid lesson
-					for d in days:
-						graph[('xtsgnd', t, s, g, n, d)] = []
-						for p in periods[d]:
-							graph[('x!tsgndp', t, s, g, n, d, p)] = []
-							graph[('xtsgndp', t, s, g, n, d, p)] = []
+for (t, s, g, n) in duration.keys()
+	for d in days:
+		graph[('xtsgnd', t, s, g, n, d)] = []
+		for p in periods[d]:
+			graph[('x!tsgndp', t, s, g, n, d, p)] = []
+			graph[('xtsgndp', t, s, g, n, d, p)] = []
 
 
 for t in teachers:
