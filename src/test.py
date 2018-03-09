@@ -2,13 +2,13 @@ import numpy as np
 
 graph = {}
 
-num_t = 2
-num_s = 2
-num_g = 2
+num_t = 1
+num_s = 1
+num_g = 1
 teachers = np.array(range(num_t))
 subjects = np.array(range(num_s))
 groups = np.array(range(num_g))
-n_max = 2
+n_max = 1
 days = range(6)
 periods = []
 for _ in days:
@@ -23,7 +23,7 @@ duration[t, s, g, n] = 2
 '''
 
 # Make zeros and change later, but this is test file, so whatever
-duration = np.ones([num_t, num_s, num_g, n_max])
+duration = np.zeros([num_t, num_s, num_g, n_max])
 
 '''
 node can be representated as ('x', t, s, g, n, d, p)
@@ -221,7 +221,7 @@ for t in teachers:
 	for d in days:
 		or_list_td = []
 		for p in periods[d]:
-			graph[('xtdp', t, d, p)].append()
+			graph[('xtdp', t, d, p)].append(('xtd', t, d))
 			or_list_td.append(('xtdp', t, d, p))
 			or_list = []
 			for s in subjects:
