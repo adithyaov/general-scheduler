@@ -131,6 +131,7 @@ def bic11(k, d, p):
 
 # initializing vars
 
+
 for t in teachers:
 	for s in subjects:
 		for g in groups:

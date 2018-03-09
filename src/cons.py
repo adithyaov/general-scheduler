@@ -91,7 +91,7 @@ def bic11(d, p):
 	]
 	return np.prod(truth)
 
-def bic11(k, d, p):
+def bic12(k, d, p):
 	truth = [
 		(k >= 1),
 		(k <= np.max(periods[d]) - p)
@@ -99,3 +99,10 @@ def bic11(k, d, p):
 	return np.prod(truth)
 
 
+def compute_lessons():
+	lessons_t = [[] for _ in num_t]
+	lessons_g = [[] for _ in num_g]
+	for x in duration.keys():
+		lessons[x[0]].append(x)
+		lessons[x[2]].append(x)
+	return (lessons_t, lessons_g)
