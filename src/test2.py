@@ -174,17 +174,18 @@ print(len(graph.keys()))
 graph[('x', t, s, g, n, d, p)] = [('or', [...])]
 '''
 
+lesson_correctness = []
+for (t,s,g,n) in duration.keys():
+    lesson_correctness.append([('xtsgnd', t, s, g, n, d) for d in days])
 
-def schedule_lesson(t, s, g, n):
+
+# def single(t, s, g, n):
     '''
-    Ensure each lesson is scheduled eventually in some day
+    Ensure atmost only one variable is satisfied
     '''
 
-    clause = encode(t=t, s=s, g=g, n=n, d=d)
-    for d in days:
-        clause = clause + ' or ' + encode(t=t, s=s, g=g, n=n, d=d)
-
-    return clause
-
-
-def single()
+    # for d1 in days:
+    #     for p1 in periods[d1]:
+    #         for d2 in days:
+    #             for p2 in periods[d2]:
+    #                 clause = clause + 'and' + encode
