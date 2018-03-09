@@ -1,6 +1,7 @@
 import numpy as np
 
 graph = {}
+true_list = []
 
 num_t = 2
 num_s = 2

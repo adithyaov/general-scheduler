@@ -77,7 +77,7 @@ def bic9(k, d):
 	]
 	return np.prod(truth)
 
-def bic10(k, d):
+def bic10(k, d, p):
 	truth = [
 		(p >= np.min(periods[d]) + 1),
 		(p <= np.max(periods[d]) - k)
