@@ -11,6 +11,7 @@
 - Each of your module should contain a README.md for instructions of usage.
 - The module should be documented properly.
 - Documentation shoud be in the code, as comments. (Refer PEP8)
+- For those using sublime, the Anaconda extension does autformatting of PEP8 errors
 - Log everything :-)
 
 ### Comments
