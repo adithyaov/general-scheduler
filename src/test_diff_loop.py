@@ -215,6 +215,38 @@ for (g, d, p) in graph2['igdp'].keys():
 
 
 
+# Correctness constraints
+
+for (t, s, g, n) in duration.keys():
+	or_list = []
+	for d in days:
+		or_list.append(('xtsgnd', t, s, g, n, d))
+	true_list.append(('or', or_list))
+
+
+multi_dict = {}
+for (t, s, g, n) in duration.keys():
+	multi_dict[(t, s, g, n)] = []
+for (t, s, g, n, d) in graph2['xtsgnd'].keys():
+	multi_dict[(t, s, g, n)].append(('xtsgnd', t, s, g, n, d))
+for (t, s, g, n) in multi_dict.keys():
+	true_list.append(single(multi_dict[(t, s, g, n)]))
+
+multi_dict = {}
+for (t, s, g, n) in duration.keys():
+	multi_dict[(t, s, g, n)] = []
+for (t, s, g, n, d, p) in graph2['x!tsgndp'].keys():
+	multi_dict[(t, s, g, n)].append(('x!tsgndp', t, s, g, n, d, p))
+for (t, s, g, n) in multi_dict.keys():
+	true_list.append(single(multi_dict[(t, s, g, n)]))
+
+
+
+
+
+
+
+
 
 t = 0
 for x in graph2.keys():
@@ -224,6 +256,8 @@ for x in graph2.keys():
 	for y in graph2[x].keys():
 		print (x, y, graph2[x][y])
 
+for x in true_list:
+	print x
 
 # print(len(graph2.keys()))
 # for x in graph.keys():

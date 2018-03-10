@@ -104,3 +104,22 @@ def bic13(d, p):
 		(p <= np.max(periods[d]))
 	]
 	return np.prod(truth)
+
+def negation(var):
+	var_to_modify = list(var)
+	if var[0][0] == '~':
+		var_to_modify[0] = var[0][1:]
+	else:
+		var_to_modify[0] = '~' + var[0]
+	return tuple(var_to_modify)
+
+def single(vars):
+	and_list = []
+	k = len(vars)
+	for j in range(k):
+		for i in range(j):
+			and_list.append(('or', [
+				negation(vars[i]),
+				negation(vars[j])
+			]))
+	return ('and', and_list)
