@@ -1,5 +1,6 @@
 import numpy as np
-
+from cons.py import *
+from var.py import *
 
 graph = {}
 
@@ -200,3 +201,13 @@ for (t, s, g, n, d, p) in graph2['x!tsgndp'].keys():
     multi_dict[(t, s, g, n, d)].append(('x!tsgndp', t, s, g, n, d, p))
 for (t, s, g, n, d) in multi_dict.keys():
     true_list.append(single(multi_dict[(t, s, g, n, d)]))
+
+
+multi_dict = {}
+for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
+    multi_dict[(g, d, p)] =  []
+for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
+    multi_dict[(g, d, p)].append(('xtsgndp', t, s, g, n, d, p))
+for (g, d, p) in multi_dict.key():
+    true_list.append(single(multi_dict[(g, d, p)]))
+    

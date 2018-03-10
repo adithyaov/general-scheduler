@@ -47,14 +47,15 @@ duration = {
 duration = {
     (0, 0, 0, 0): 2,
     (0, 1, 0, 0): 3,
-    (1, 1, 0, 0): 3, 
-    (1, 1, 1, 1): 3 
+    (1, 1, 0, 0): 3,
+    (1, 1, 1, 1): 3
 }
 
 '''
 lessons of t
 lessons_t[t] = [(t, s, g, n)]
 '''
+
 
 def compute_lessons():
     lessons_t = [[] for _ in range(num_t)]
@@ -66,5 +67,3 @@ def compute_lessons():
 
 
 (lessons_t, lessons_g) = compute_lessons()
-
-
