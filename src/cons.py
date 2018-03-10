@@ -97,3 +97,10 @@ def bic12(k, d, p):
 		(k <= np.max(periods[d]) - p)
 	]
 	return np.prod(truth)
+
+def bic13(d, p):
+	truth = [
+		(p >= np.min(periods[d])),
+		(p <= np.max(periods[d]))
+	]
+	return np.prod(truth)

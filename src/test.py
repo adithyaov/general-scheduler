@@ -129,8 +129,9 @@ for t in teachers:
 	for p in range(p_max):
 		or_list = []
 		for d in days:
-			or_list.append(('xtdp', t, d, p))
-			graph[('xtdp', t, d, p)].append(('xtd', t, d))
+			if bic13(d, p):
+				or_list.append(('xtdp', t, d, p))
+				graph[('xtdp', t, d, p)].append(('xtd', t, d))
 		graph[('xtp', t, p)].append(('or', or_list))
 
 
@@ -192,7 +193,8 @@ for t in teachers:
 
 
 print(len(graph.keys()))
-print(graph)
+# for x in graph.keys():
+# 	print(x, '=>' ,graph[x])
 
 
 '''
