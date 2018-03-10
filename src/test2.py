@@ -176,9 +176,17 @@ print(len(graph.keys()))
 graph[('x', t, s, g, n, d, p)] = [('or', [...])]
 '''
 
-# lesson_correctness = []
-# for (t,s,g,n) in duration.keys():
-#     lesson_correctness.append([('xtsgnd', t, s, g, n, d) for d in days])
+lesson_correctness = []
+for (t,s,g,n) in duration.keys():
+    lesson_correctness.append([('xtsgnd', t, s, g, n, d) for d in days])
+
+single = []
+for d1 in days:
+    for p1 in periods[d1]:
+        for d2 in days:
+            for p2 in periods[d2]:
+                single = 
+
 
 
 # def single(t, s, g, n):
@@ -186,8 +194,3 @@ graph[('x', t, s, g, n, d, p)] = [('or', [...])]
     # Ensure atmost only one variable is satisfied
     # '''
 
-    # for d1 in days:
-    #     for p1 in periods[d1]:
-    #         for d2 in days:
-    #             for p2 in periods[d2]:
-    #                 clause = clause + 'and' + encode
