@@ -26,8 +26,8 @@ duration[t, s, g, n] = 2
 
 # Make zeros and change later, but this is test file, so whatever
 duration = np.zeros([num_t, num_s, num_g, n_max])
-duration[0,0,0,0] = 1
-duration[1,1,1,1] = 1
+duration[0, 0, 0, 0] = 1
+duration[1, 1, 1, 1] = 1
 '''
 node can be representated as ('x', t, s, g, n, d, p)
 graph will be the same but these tuples as nodes
@@ -176,21 +176,27 @@ print(len(graph.keys()))
 graph[('x', t, s, g, n, d, p)] = [('or', [...])]
 '''
 
-lesson_correctness = []
-for (t,s,g,n) in duration.keys():
-    lesson_correctness.append([('xtsgnd', t, s, g, n, d) for d in days])
+# Correctness constraints
 
-single = []
-for d1 in days:
-    for p1 in periods[d1]:
-        for d2 in days:
-            for p2 in periods[d2]:
-                single = 
+for (t, s, g, n) in duration.keys():
+    or_list = []
+    for d in days:
+        or_list.append(('xtsgnd', t, s, g, n, d))
+    true_list.append(('or', or_list))
 
 
+multi_dict = {}
+for (t, s, g, n) in duration.keys():
+    multi_dict[(t, s, g, n)] = []
+for (t, s, g, n, d) in graph2['xtsgnd'].keys():
+    multi_dict[(t, s, g, n)].append(('xtsgnd', t, s, g, n, d))
+for (t, s, g, n) in multi_dict.keys():
+    true_list.append(single(multi_dict[(t, s, g, n)]))
 
-# def single(t, s, g, n):
-    # '''
-    # Ensure atmost only one variable is satisfied
-    # '''
-
+multi_dict = {}
+for (t, s, g, n, d, p) in graph2['x!tsgndp'].keys():
+    multi_dict[(t, s, g, n, d)] = []
+for (t, s, g, n, d, p) in graph2['x!tsgndp'].keys():
+    multi_dict[(t, s, g, n, d)].append(('x!tsgndp', t, s, g, n, d, p))
+for (t, s, g, n, d) in multi_dict.keys():
+    true_list.append(single(multi_dict[(t, s, g, n, d)]))
