@@ -225,22 +225,20 @@ for (t, s, g, n) in duration.keys():
 
 
 multi_dict = {}
-for (t, s, g, n) in duration.keys():
-	multi_dict[(t, s, g, n)] = []
 for (t, s, g, n, d) in graph2['xtsgnd'].keys():
-	multi_dict[(t, s, g, n)].append(('xtsgnd', t, s, g, n, d))
+    multi_dict[(t, s, g, n)] = []
+for (t, s, g, n, d) in graph2['xtsgnd'].keys():
+    multi_dict[(t, s, g, n)].append(('xtsgnd', t, s, g, n, d))
 for (t, s, g, n) in multi_dict.keys():
-	true_list.append(single(multi_dict[(t, s, g, n)]))
+    true_list.append(single(multi_dict[(t, s, g, n)]))
 
 multi_dict = {}
-for (t, s, g, n) in duration.keys():
-	multi_dict[(t, s, g, n)] = []
 for (t, s, g, n, d, p) in graph2['x!tsgndp'].keys():
-	multi_dict[(t, s, g, n)].append(('x!tsgndp', t, s, g, n, d, p))
-for (t, s, g, n) in multi_dict.keys():
-	true_list.append(single(multi_dict[(t, s, g, n)]))
-
-
+    multi_dict[(t, s, g, n, d)] = []
+for (t, s, g, n, d, p) in graph2['x!tsgndp'].keys():
+    multi_dict[(t, s, g, n, d)].append(('x!tsgndp', t, s, g, n, d, p))
+for (t, s, g, n, d) in multi_dict.keys():
+    true_list.append(single(multi_dict[(t, s, g, n, d)]))
 
 
 
