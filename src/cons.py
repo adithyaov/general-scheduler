@@ -155,4 +155,4 @@ def together(groups, t, s, n):
     return
 
 
-def cardinality(vars, k):
+# def cardinality(vars, k):
