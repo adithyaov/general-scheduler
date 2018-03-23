@@ -74,12 +74,12 @@ for (t, s, g, n, d, p1) in graph2['x!tsgndp'].keys():
             )
 
 for (t, s, g, n, d, p2) in graph2['xtsgndp'].keys():
-    if bic3(d, p2):   #required ?...
-        or_list = []
-        for p1 in periods[d]:
-            if bic2(t, s, g, n, d, p1, p2):
-                or_list.append(('x!tsgndp', (t, s, g, n, d, p1)))
-        graph2['xtsgndp'][(t, s, g, n, d, p2)].append(('or', or_list))
+    # if bic3(d, p2):   #required ?... # Remove this (NOT REQ) (d, p2 already properly built)
+    or_list = []
+    for p1 in periods[d]:
+        if bic2(t, s, g, n, d, p1, p2):
+            or_list.append(('x!tsgndp', (t, s, g, n, d, p1)))
+    graph2['xtsgndp'][(t, s, g, n, d, p2)].append(('or', or_list))
 
 
 for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
@@ -134,13 +134,15 @@ for (t, p) in graph2['xtp'].keys():
 
 for (k, t, d, p) in graph2['iktdp'].keys():
     graph2['iktdp'][(k, t, d, p)].append(('xtdp', (t, d, p - 1)))
+    or_list = []
     for j in range(k):
         graph2['iktdp'][(k, t, d, p)].append(('~xtdp', (t, d, p + j)))
+        or_list.append(('xtdp', (t, d, p + j))) # added this [1]
     graph2['iktdp'][(k, t, d, p)].append(('xtdp', (t, d, p + k)))
     true_list.append(
         ('or', [
                     ('~xtdp', (t, d, p - 1)),
-                    ('or', or_list),    # ?
+                    ('or', or_list),    # ? ------------------- reviewed at [1]
                     ('~xtdp', (t, d, p + k)),
                     ('~iktdp', (k, t, d, p))
         ]))
@@ -179,11 +181,12 @@ for (k, g, d, p) in graph2['ikgdp'].keys():
     graph2['ikgdp'][(k, g, d, p)].append(('xgdp', (g, d, p - 1)))
     for j in range(k):
         graph2['ikgdp'][(k, g, d, p)].append(('~xgdp', (g, d, p + j)))
+        or_list.append(('xgdp', (g, d, p + j))) # added this [2]
     graph2['ikgdp'][(k, g, d, p)].append(('xgdp', (g, d, p + k)))
     true_list.append(
         ('or', [
                     ('~xgdp', (g, d, p - 1)),
-                    # ? ('or', or_list),
+                    ('or', or_list),  # ----------- reviewed at [2]
                     ('~xgdp', (g, d, p + k)),
                     ('~ikgdp', (k, g, d, p))
         ]))
@@ -232,6 +235,7 @@ for (t, s, g, n, d) in graph2['xtsgnd'].keys():
 for (t, s, g, n) in multi_dict.keys():
     true_list.append(single(multi_dict[(t, s, g, n)]))
 
+
 multi_dict = {}
 for (t, s, g, n, d, p) in graph2['x!tsgndp'].keys():
     multi_dict[(t, s, g, n, d)] = []
@@ -239,6 +243,49 @@ for (t, s, g, n, d, p) in graph2['x!tsgndp'].keys():
     multi_dict[(t, s, g, n, d)].append(('x!tsgndp', (t, s, g, n, d, p)))
 for (t, s, g, n, d) in multi_dict.keys():
     true_list.append(single(multi_dict[(t, s, g, n, d)]))
+
+
+multi_dict = {}
+for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
+    multi_dict[(g, d, p)] = []
+for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
+    multi_dict[(g, d, p)].append(('xtsgndp', (t, s, g, n, d, p)))
+for (g, d, p) in multi_dict.keys():
+    true_list.append(single(multi_dict[(g, d, p)]))
+
+
+# The below is incomplete! 2 groups being thaught at same time? Add new group...?
+multi_dict = {}
+for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
+    multi_dict[(t, d, p)] = []
+for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
+    multi_dict[(t, d, p)].append(('xtsgndp', (t, s, g, n, d, p)))
+for (t, d, p) in multi_dict.keys():
+    true_list.append(single(multi_dict[(t, d, p)]))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 t = 0
