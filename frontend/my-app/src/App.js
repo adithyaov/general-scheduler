@@ -36,15 +36,17 @@ class App extends Component {
       <div className="App">
         <div>
           <label>T: </label>
-          <input type='number' onChange={this.handleChangeNo_t}/>
+          <input type='number' onChange={this.handleChangeNo_t} placeholder={this.state.no_t} min="1"/>
           <label>G: </label>
-          <input type='number' onChange={this.handleChangeNo_g}/>
+          <input type='number' onChange={this.handleChangeNo_g} placeholder={this.state.no_g} min="1"/>
         </div>
         <ul>
         {this.state.subs.map((subs, idx) => (
           <li key={subs.id}>
           <div className='constraintBar'>
             <input type='text' placeholder={`Constraint #${subs.id + 1}`} />
+            Teacher: { this.createTlist(subs.id) }
+            Group: { this.createGlist() }
             <button onClick={this.handleRemoveConstraint(idx)} > Remove </button>
           </div>
           </li>
@@ -55,14 +57,26 @@ class App extends Component {
         </div>
     );
   }
-
-  TSG()
+  setTeacherConstraint(sid, tid)
   {
-    return (
-      <div>poiuytre</div>
-      )
+    alert("Constraint set for " + tid + " on " + sid);
   }
-
+  createTlist(sid)
+  {
+    var options = []
+    for(var i = 0; i < this.state.no_t; i++){
+      options.push(React.createElement('option', {onChange: this.setTeacherConstraint(sid, i)}, i+1))
+    }
+    
+    return(<select>{options}</select>)
+  }
+  createGlist()
+  {
+    var options = []
+    for(var i = 0; i < this.state.no_g; i++){options.push(React.createElement('option', {}, i+1))}
+    return(<select>{options}</select>)
+  }
 }
+
 
 export default App;
