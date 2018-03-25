@@ -30,7 +30,7 @@ for g in groups:
             graph2['xgdp'][(g, d, p)] = []
 
 
-for k in range(p_max):
+for k in range(p_max): #should it not be from 1 to pmax rather than from 0 to pmax - 1
     for t in teachers:
         graph2['ikt'][(k, t)] = []
         for d in days:
