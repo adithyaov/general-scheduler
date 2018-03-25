@@ -1,5 +1,5 @@
 from var import *
-
+import math
 
 def bic0(t, s, g, n):
     truth = [
@@ -136,6 +136,44 @@ def single(vars):
             ]))
     return ('and', and_list)
 
+def cardinality(vars, k):
+    '''
+    Condition that is satisfied when atmost k variables
+    are satisfied in the given variable list (vars).
+
+    The encoding used is binary and symmetric breaking
+    '''
+    n = len(vars)
+    bin_size = math.log(n)/math.log(2)
+    T = {}
+
+    #Auxillary variables
+    for i in range(n):
+        for g in range(k):
+            T[('Tgi', g, i)] = []
+
+    or_list1 = []
+    or_list2 = []
+    and_list1 = []
+    and_list2 = []
+
+    
+
+
+
+# def cardinality_2(vars, k):
+    # '''
+    # Condition that is satisfied when atmost k variables
+    # are satisfied in the given variable list (vars).
+# 
+    # The encoding used is sequential counter
+    # '''
+# 
+ 
+
+
+
+
 
 def together(groups, t, s, n):
     '''
@@ -153,6 +191,12 @@ def together(groups, t, s, n):
                                  negation(groups[j + 1])])
                         ]))
     return
+
+
+
+
+
+
 
 
 # def cardinality(vars, k):
