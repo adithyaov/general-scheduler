@@ -13,12 +13,12 @@ We know that Scheduling is a NP-hard problem. Our aim is to convert the scheduli
 
 # INSTALLING Z3
 
-If you want to build on lab account contact me, else follow this if you have sudo rights
+If you want to build on the lab account contact me, else follow this if you have sudo rights  
 
-step 1: `mkdir -p ~\mayank_is_great; cd ~\mayank_is_great`
-step 2: `git clone https://github.com/Z3Prover/z3.git`
-step 3: `cd z3`
-step 4: ``` python scripts/mk_make.py
-            cd build
-            make
-            sudo make install```
+step 1: `mkdir -p ~\gen_scheduler; cd ~\gen_scheduler`  
+step 2: `git clone https://github.com/Z3Prover/z3.git`  
+step 3: `cd z3`  
+step 4: ``` python scripts/mk_make.py  
+            cd build  
+            make  
+            sudo make install```  
