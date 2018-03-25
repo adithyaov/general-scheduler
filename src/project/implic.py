@@ -5,14 +5,12 @@ from cons import *
 
 # initializing vars
 
-
 for (t, s, g, n) in duration.keys():
     for d in days:
         graph2['xtsgnd'][(t, s, g, n, d)] = []
         for p in periods[d]:
             graph2['x!tsgndp'][(t, s, g, n, d, p)] = []
             graph2['xtsgndp'][(t, s, g, n, d, p)] = []
-
 
 for t in teachers:
     for d in days:
@@ -29,8 +27,7 @@ for g in groups:
         for p in periods[d]:
             graph2['xgdp'][(g, d, p)] = []
 
-
-for k in range(p_max): # should it not be from 1 to pmax rather than from 0 to pmax - 1
+for k in range(p_max):
     for t in teachers:
         graph2['ikt'][(k, t)] = []
         for d in days:
@@ -50,7 +47,6 @@ for k in range(p_max):
                 if bic8(k, d, p):
                     graph2['ikgdp'][(k, g, d, p)] = []
 
-
 for t in teachers:
     for d in days:
         for p in periods[d]:
@@ -62,7 +58,6 @@ for g in groups:
         for p in periods[d]:
             if bic11(d, p):
                 graph2['igdp'][(g, d, p)] = []
-
 
 # Implications
 
@@ -81,12 +76,10 @@ for (t, s, g, n, d, p2) in graph2['xtsgndp'].keys():
             or_list.append(('x!tsgndp', (t, s, g, n, d, p1)))
     graph2['xtsgndp'][(t, s, g, n, d, p2)].append(('or', or_list))
 
-
 for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
     graph2['xtsgndp'][(t, s, g, n, d, p)].append(('xtsgnd', (t, s, g, n, d)))
     graph2['xtsgndp'][(t, s, g, n, d, p)].append(('xtdp', (t, d, p)))
     graph2['xtsgndp'][(t, s, g, n, d, p)].append(('xgdp', (g, d, p)))
-
 
 for (t, s, g, n, d) in graph2['xtsgnd'].keys():
     or_list = []
@@ -94,9 +87,7 @@ for (t, s, g, n, d) in graph2['xtsgnd'].keys():
         or_list.append(('xtsgndp', (t, s, g, n, d, p)))
     graph2['xtsgnd'][(t, s, g, n, d)].append(('or', or_list))
 
-
 or_list_t = {}
-
 or_list_g = {}
 
 for (t, d, p) in graph2['xtdp'].keys():
@@ -117,7 +108,6 @@ for (t, d, p) in graph2['xtdp'].keys():
 for (g, d, p) in graph2['xgdp'].keys():
     graph2['xgdp'][(g, d, p)].append(('or', or_list_g[(g, d, p)]))
 
-
 for (t, d) in graph2['xtd'].keys():
     or_list = []
     for p in periods[d]:
@@ -130,7 +120,6 @@ for (t, p) in graph2['xtp'].keys():
         if bic3(d, p):#if p in periods[d]:
          	or_list.append(('xtdp', (t, d, p)))
     graph2['xtp'][(t, p)].append(('or', or_list))
-
 
 for (k, t, d, p) in graph2['iktdp'].keys():
     graph2['iktdp'][(k, t, d, p)].append(('xtdp', (t, d, p - 1)))
@@ -176,7 +165,6 @@ for (t, d, p) in graph2['itdp'].keys():
 # ================ EXACTLY SAME FOR GROUPS =================
 # Abstract this somehow!
 
-
 for (k, g, d, p) in graph2['ikgdp'].keys():
     graph2['ikgdp'][(k, g, d, p)].append(('xgdp', (g, d, p - 1)))
     for j in range(k):
@@ -217,7 +205,6 @@ for (g, d, p) in graph2['igdp'].keys():
             or_list.append(('ikgdp', (k, g, d, p)))
     graph2['igdp'][(g, d, p)].append(('or', or_list))
 
-
 # Correctness constraints
 
 for (t, s, g, n) in duration.keys():
@@ -225,7 +212,6 @@ for (t, s, g, n) in duration.keys():
     for d in days:
         or_list.append(('xtsgnd', (t, s, g, n, d)))
     true_list.append(('or', or_list))
-
 
 multi_dict = {}
 for (t, s, g, n, d) in graph2['xtsgnd'].keys():
@@ -235,7 +221,6 @@ for (t, s, g, n, d) in graph2['xtsgnd'].keys():
 for (t, s, g, n) in multi_dict.keys():
     true_list.append(single(multi_dict[(t, s, g, n)]))
 
-
 multi_dict = {}
 for (t, s, g, n, d, p) in graph2['x!tsgndp'].keys():
     multi_dict[(t, s, g, n, d)] = []
@@ -243,7 +228,6 @@ for (t, s, g, n, d, p) in graph2['x!tsgndp'].keys():
     multi_dict[(t, s, g, n, d)].append(('x!tsgndp', (t, s, g, n, d, p)))
 for (t, s, g, n, d) in multi_dict.keys():
     true_list.append(single(multi_dict[(t, s, g, n, d)]))
-
 
 multi_dict = {}
 for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
@@ -253,8 +237,8 @@ for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
 for (g, d, p) in multi_dict.keys():
     true_list.append(single(multi_dict[(g, d, p)]))
 
-
 # The below is incomplete! 2 groups being thaught at same time? Add new group...?
+
 multi_dict = {}
 for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
     multi_dict[(t, d, p)] = []
@@ -262,48 +246,3 @@ for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
     multi_dict[(t, d, p)].append(('xtsgndp', (t, s, g, n, d, p)))
 for (t, d, p) in multi_dict.keys():
     true_list.append(single(multi_dict[(t, d, p)]))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-t = 0
-for x in graph2.keys():
-    t += len(graph2[x])
-
-for x in graph2.keys():
-    for y in graph2[x].keys():
-        print (x, y, graph2[x][y])
-
-for x in true_list:
-    print x
-
-# print(len(graph2.keys()))
-# for x in graph.keys():
-# 	print(x, '=>' ,graph2[x])
-
-
-'''
-graph2[('x', t, s, g, n, d, p)] = [('or', [...])]
-'''
