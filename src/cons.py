@@ -144,20 +144,42 @@ def cardinality(vars, k):
     The encoding used is binary and symmetric breaking
     '''
     n = len(vars)
-    bin_size = math.log(n)/math.log(2)
-    T = {}
+    bin_size = math.ceil(math.log(n)/math.log(2))
 
-    #Auxillary variables
+    # Auxillary variables
+    # T variables
+    T_vars = {}
     for i in range(n):
+        T_vars[vars(i)] = []
         for g in range(k):
-            T[('Tgi', g, i)] = []
+            T_vars[vars(i)].append('Tgi', (g, i))
 
-    or_list1 = []
-    or_list2 = []
+    # s variables
+    bin_strings = {}
+    for i in range(n):
+        bin_strings[vars(i)] = list('{:0{}}'.format(i, bin_size))
+
+    # B variables
+    B_vars = {}
+    for i in range(n):
+        B_vars[vars(i)] = {}
+        for g in range(k):
+            B_vars[vars(i)][g] = {}
+            for j in range(bin_size):
+                if(bin_strings[vars(i)][i] == '1'):
+                    B_vars[vars(i)][g][j] = ('Bgj', (g, j))
+                else:
+                    B_vars[vars(i)][g][j] = negation('Bgj', (g, j))
+
     and_list1 = []
+    for i in range(n):
+        T_or_list = []
+        for g in range(max(1, (k - n + i)), min(i, k) + 1):
+            T_or_list.append(T_vars[vars(i)][g])
     and_list2 = []
 
-    
+
+
 
 
 
