@@ -30,7 +30,9 @@ for g in groups:
             graph2['xgdp'][(g, d, p)] = []
 
 
-for k in range(p_max): #should it not be from 1 to pmax rather than from 0 to pmax - 1
+
+for k in range(1, p_max + 1): #should it not be from 1 to pmax rather than from 0 to pmax - 1
+    # Yes it sould be from 1 to p_max - 1.
     for t in teachers:
         graph2['ikt'][(k, t)] = []
         for d in days:
@@ -40,7 +42,7 @@ for k in range(p_max): #should it not be from 1 to pmax rather than from 0 to pm
                 if bic8(k, d, p):
                     graph2['iktdp'][(k, t, d, p)] = []
 
-for k in range(p_max):
+for k in range(1, p_max + 1):
     for g in groups:
         graph2['ikg'][(k, g)] = []
         for d in days:
