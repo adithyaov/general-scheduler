@@ -171,12 +171,28 @@ def cardinality(vars, k):
                 else:
                     B_vars[vars(i)][g][j] = negation('Bgj', (g, j))
 
-    and_list1 = []
+    main_and_clause = []
     for i in range(n):
         T_or_list = []
         for g in range(max(1, (k - n + i)), min(i, k) + 1):
-            T_or_list.append(T_vars[vars(i)][g])
-    and_list2 = []
+            T_or_list.append(T_vars[vars(i)][g]) = T_vars[i][g]
+
+        or_clause_1 = ('or', negation(vars[i]), ('or', T_or_list))
+        
+        and_list1 = []
+        for g in range(max(1, (k - n + i)), min(i, k) + 1):
+            and_list2 = []
+            for j in range(bin_size):
+                and_list2.append('or', negation(T_vars[g][i], B_vars[vars(i)][g][j]))
+
+            and_list1.append('and', and_list2)
+
+        and_clause_1 = ('and', and_list1)
+
+        main_and_clause.append('and', or_clause_1, and_clause_1)
+
+    return ('and', main_and_clause)
+
 
 
 
