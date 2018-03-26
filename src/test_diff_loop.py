@@ -261,30 +261,26 @@ The overlapping can be removied using the comfort conditions.
 
 multi_dict = {}
 for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
-    multi_dict[(t, s, n, d, p)] = []
+    multi_dict[(t, d, p)] = {}
 for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
-    multi_dict[(t, s, n, d, p)].append(('xtsgndp', (t, s, g, n, d, p)))
-for (t, s, n, d, p) in multi_dict.keys():
-    l = len(multi_dict[(t, s, n, d, p)])
-    for i in range(l):
-        if i == 0:
-            append_list = multi_dict[(t, s, n, d, p)][1:]
-        elif i == l - 1:
-            append_list = multi_dict[(t, s, n, d, p)][:-1]
-        else:
-            append_list = multi_dict[(t, s, n, d, p)][:i-1] + multi_dict[(t, s, n, d, p)][i+1:]
-        graph2['xtsgndp'][multi_dict[(t, s, n, d, p)][i][1]] += append_list
-
-
-
-multi_dict = {}
+    multi_dict[(t, d, p)][(s, n)] = []
 for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
-    multi_dict[(t, g, d, p)] = []
-for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
-    multi_dict[(t, g, d, p)].append(('xtsgndp', (t, s, g, n, d, p)))
-for (t, g, d, p) in multi_dict.keys():
-    if len(multi_dict[(t, g, d, p)]) > 1:
-        true_list.append(single(multi_dict[(t, g, d, p)]))
+    multi_dict[(t, d, p)][(s, n)].append(('xtsgndp', (t, s, g, n, d, p)))
+for (t, d, p) in multi_dict.keys():
+    single_list = []
+    for (s, n) in multi_dict[(t, d, p)]:
+        single_list.append(multi_dict[(t, d, p)][(s, n)][0])
+        l = len(multi_dict[(t, d, p)][(s, n)])
+        for i in range(l):
+            if i == 0:
+                append_list = multi_dict[(t, d, p)][(s, n)][1:]
+            elif i == l - 1:
+                append_list = multi_dict[(t, d, p)][(s, n)][:-1]
+            else:
+                append_list = multi_dict[(t, d, p)][(s, n)][:i-1] + multi_dict[(t, d, p)][(s, n)][i+1:]
+            graph2['xtsgndp'][multi_dict[(t, d, p)][(s, n)][i][1]] += append_list
+    true_list.append(single(single_list))
+
 
 '''
 Check the previous 2 implications.

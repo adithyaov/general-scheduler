@@ -136,6 +136,7 @@ def single(vars):
             ]))
     return ('and', and_list)
 
+
 def cardinality(vars, k):
     '''
     Condition that is satisfied when atmost k variables
