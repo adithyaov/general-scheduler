@@ -1,6 +1,5 @@
 import numpy as np
 
-graph = {}
 true_list = []
 
 graph2 = {}
@@ -36,7 +35,6 @@ for _ in days:
     periods.append([0, 1, 2, 3, 4, 5])
 periods[0] = [0, 1, 2, 3]
 
-
 _duration = np.ones([num_t, num_s, num_g, n_max])
 
 '''
@@ -56,7 +54,6 @@ lessons of t
 lessons_t[t] = [(t, s, g, n)]
 '''
 
-
 def compute_lessons():
     lessons_t = [[] for _ in range(num_t)]
     lessons_g = [[] for _ in range(num_g)]
@@ -64,6 +61,5 @@ def compute_lessons():
         lessons_t[x[0]].append(x)
         lessons_g[x[2]].append(x)
     return (lessons_t, lessons_g)
-
 
 (lessons_t, lessons_g) = compute_lessons()
