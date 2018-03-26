@@ -28,7 +28,7 @@ class App extends Component {
         <button onClick={() => {console.log(this.state)}}>log state</button>
         <div>
           <label>No of working days in a week:</label>
-          <input id="dow" type='number' onChange={this.handleChangedow} placeholder={this.state.dow} min="1"/>
+          <input id="dow" type='number' onChange={this.handleChangedow} placeholder={this.state.dow} min="1" max="7"/>
           <br/>
           <label>No of periods in a day:</label>
           <input id="no_p" type='number' onChange={this.handleChangeNo_p} placeholder={this.state.no_p} min="1"/>
@@ -215,7 +215,6 @@ class App extends Component {
   }
 
   makeConstBody = (cons) => {
-    var cBody;
     switch(cons.ctype)
     {
       case "1": return (<span>Teacher: {this.createTlistComf(cons)} prefers not to be scheduled on day: {this.createDlistComf(cons)} during period: {this.createPlistComf(cons)} </span>);
