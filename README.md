@@ -13,7 +13,7 @@ We know that Scheduling is a NP-hard problem. Our aim is to convert the scheduli
 
 # INSTALLING Z3
 
-Contact Mayank if any problem occurs during installation
+Create an issue and assign **immkg** if any problem occurs during installation.  
 
 * step 01: `mkdir -p ~/capp; cd ~/capp`
 * step 02: `git clone https://github.com/Z3Prover/z3.git`
