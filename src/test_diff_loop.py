@@ -30,7 +30,9 @@ for g in groups:
             graph2['xgdp'][(g, d, p)] = []
 
 
-for k in range(p_max):
+
+for k in range(1, p_max + 1): #should it not be from 1 to pmax rather than from 0 to pmax - 1
+    # Yes it sould be from 1 to p_max - 1. -- SOLVED
     for t in teachers:
         graph2['ikt'][(k, t)] = []
         for d in days:
@@ -40,7 +42,7 @@ for k in range(p_max):
                 if bic8(k, d, p):
                     graph2['iktdp'][(k, t, d, p)] = []
 
-for k in range(p_max):
+for k in range(1, p_max + 1):
     for g in groups:
         graph2['ikg'][(k, g)] = []
         for d in days:
@@ -232,6 +234,7 @@ for (t, s, g, n, d) in graph2['xtsgnd'].keys():
 for (t, s, g, n) in multi_dict.keys():
     true_list.append(single(multi_dict[(t, s, g, n)]))
 
+
 multi_dict = {}
 for (t, s, g, n, d, p) in graph2['x!tsgndp'].keys():
     multi_dict[(t, s, g, n, d)] = []
@@ -241,16 +244,72 @@ for (t, s, g, n, d) in multi_dict.keys():
     true_list.append(single(multi_dict[(t, s, g, n, d)]))
 
 
-t = 0
-for x in graph2.keys():
-    t += len(graph2[x])
 
-for x in graph2.keys():
-    for y in graph2[x].keys():
-        print (x, y, graph2[x][y])
+multi_dict = {}
+for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
+    multi_dict[(g, d, p)] = []
+for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
+    multi_dict[(g, d, p)].append(('xtsgndp', (t, s, g, n, d, p)))
+for (g, d, p) in multi_dict.keys():
+    true_list.append(single(multi_dict[(g, d, p)]))
 
-for x in true_list:
-    print x
+
+'''
+Assume all groups can be interleaved
+The overlapping can be removied using the comfort conditions.
+'''
+
+multi_dict = {}
+for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
+    multi_dict[(t, s, n, d, p)] = []
+for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
+    multi_dict[(t, s, n, d, p)].append(('xtsgndp', (t, s, g, n, d, p)))
+for (t, s, n, d, p) in multi_dict.keys():
+    l = len(multi_dict[(t, s, n, d, p)])
+    for i in range(l):
+        if i == 0:
+            append_list = multi_dict[(t, s, n, d, p)][1:]
+        elif i == l - 1:
+            append_list = multi_dict[(t, s, n, d, p)][:-1]
+        else:
+            append_list = multi_dict[(t, s, n, d, p)][:i-1] + multi_dict[(t, s, n, d, p)][i+1:]
+        graph2['xtsgndp'][multi_dict[(t, s, n, d, p)][i][1]] += append_list
+
+
+
+multi_dict = {}
+for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
+    multi_dict[(t, g, d, p)] = []
+for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
+    multi_dict[(t, g, d, p)].append(('xtsgndp', (t, s, g, n, d, p)))
+for (t, g, d, p) in multi_dict.keys():
+    if len(multi_dict[(t, g, d, p)]) > 1:
+        true_list.append(single(multi_dict[(t, g, d, p)]))
+
+'''
+Check the previous 2 implications.
+'''
+
+
+
+
+
+
+
+
+
+
+
+# t = 0
+# for x in graph2.keys():
+#     t += len(graph2[x])
+
+# for x in graph2.keys():
+#     for y in graph2[x].keys():
+#         print (x, y, graph2[x][y])
+
+# for x in true_list:
+#     print x
 
 # print(len(graph2.keys()))
 # for x in graph.keys():
