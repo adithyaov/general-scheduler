@@ -48,7 +48,7 @@ class App extends Component {
             <input type='text' placeholder={`Subject`} onChange={this.handleChangeClassName(subs.id)} />
             Teacher: { this.createTlist(subs.id) }
             Group: { this.createGlist(subs.id) }
-            Hours: <input type='number' onChange={this.handleChangeHour(subs.id)} placeholder={this.state.no_g} min="1"/>
+            Hours: <input type='number' onChange={this.handleChangeHour(subs.id)} placeholder="1" min="1"/>
             <button onClick={this.handleRemoveClass(subs.id)} > Remove </button>
           </div>
           </li>
@@ -68,6 +68,9 @@ class App extends Component {
             </li>
           ))}
         </ul>
+        </div>
+        <div>
+          <button onClick={this.sendState()}>Send</button>
         </div>
         </div>
     );
@@ -309,6 +312,13 @@ class App extends Component {
       listElem.push(React.createElement('option', {value : comfort.id, key : comfort.id}, comfort.label));
     })
     return (<select id="comfList" key={this.state.cid}>{listElem}</select>)
+  }
+  sendState()
+  {
+    var req = new XMLHttpRequest();
+    req.open('POST', '/input', false);
+    req.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    req.send(JSON.stringify(this.state));
   }
 }
 
