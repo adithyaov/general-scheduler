@@ -24,6 +24,6 @@ Contact Mayank if any problem occurs during installation
 * step 07: `sudo make install`
 * step 08: `cd ~`
 * step 09: `cp .bashrc .bashrc_bkp`
-* step 10: `echo "export LD_LIBRARY_PATH=~capp/z3/build" >> .bashrc`
-* step 11: `echo "export PYTHONPATH=~capp/z3/build/python" >> .bashrc`
+* step 10: `echo "export LD_LIBRARY_PATH=~/capp/z3/build" >> .bashrc`
+* step 11: `echo "export PYTHONPATH=~/capp/z3/build/python" >> .bashrc`
 * step 12: `source .bashrc`
