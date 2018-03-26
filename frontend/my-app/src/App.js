@@ -12,8 +12,8 @@ class App extends Component {
       no_c : 0,
       cid : 0,
       subs: [],
-      no_t : 1,
-      no_g : 1,
+      no_t : 0,
+      no_g : 0,
       dow: 5,
       no_p: 8,
       comforts: comfortList.comforts,
@@ -77,8 +77,8 @@ class App extends Component {
       this.setState({subs : this.state.subs.concat([{
         id : this.state.sid + 1 ,
         name : '',
-        t: 1,
-        g: 1,
+        t: 0,
+        g: 0,
         n: 1,
        }])});
       this.setState({no_s : this.state.no_s + 1,sid : this.state.sid + 1});
@@ -127,42 +127,42 @@ class App extends Component {
     switch(comfid)
     {
       case "1":
-        newcons['t'] = 1;
+        newcons['t'] = 0;
         newcons['p'] = 0;
         newcons['d'] = 0;
         break;
       case "2":
-        newcons['t'] = 1;
+        newcons['t'] = 0;
         newcons['p'] = 0;
         newcons['d'] = 0;
         break;
       case "3":
-        newcons['g'] = 1;
+        newcons['g'] = 0;
         newcons['d'] = 0;
         newcons['p'] = 0;
         break;
       case "4":
-        newcons['g1'] = 1;
-        newcons['g2'] = 1;
+        newcons['g1'] = 0;
+        newcons['g2'] = 0;
         break;
       case "5":
-        newcons['t1'] = 1;
-        newcons['t2'] = 1;
+        newcons['t1'] = 0;
+        newcons['t2'] = 0;
         break;
       case "6":
-        newcons['t1'] = 1;
-        newcons['t2'] = 1;
+        newcons['t1'] = 0;
+        newcons['t2'] = 0;
         break;
       case "7":
-        newcons['t'] = 1;
+        newcons['t'] = 0;
         newcons['nd'] = 6;
         break;
       case "8":
-        newcons['g'] = 1;
+        newcons['g'] = 0;
         newcons['np'] = 1;
         break;
       case "9":
-        newcons['t'] = 1;
+        newcons['t'] = 0;
         newcons['k'] = 1;
         break;
       case "10":
@@ -172,7 +172,7 @@ class App extends Component {
         break;
       case "11":
         newcons['s'] = 1;
-        newcons['d'] = 1;
+        newcons['d'] = 0;
         newcons['mode'] = 0;
         break;
       case "12":
@@ -255,7 +255,7 @@ class App extends Component {
   {
     var options = []
     for(var i = 0; i < this.state.no_t; i++){
-      options.push(React.createElement('option', {"value" : i + 1 , "key": i}, i+1))
+      options.push(React.createElement('option', {"value" : i  , "key": i}, i))
     }
     
     return(<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]} >{options}</select>)
@@ -264,7 +264,7 @@ class App extends Component {
   {
     var options = []
     for(var i = 0; i < this.state.no_g; i++){
-      options.push(React.createElement('option', {"value" : i + 1, "key": i}, i+1))
+      options.push(React.createElement('option', {"value" : i, "key": i}, i))
     }
     return(<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]}>{options}</select>)
   }
@@ -289,7 +289,7 @@ class App extends Component {
   {
     var options = []
     for(var i = 0; i < this.state.no_t; i++){
-      options.push(React.createElement('option', {"value" : i + 1 , "key": i}, i+1))
+      options.push(React.createElement('option', {"value" : i , "key": i}, i))
     }
     
     return(<select onChange={this.setTeacherConstraint(sid)} >{options}</select>)
@@ -298,7 +298,7 @@ class App extends Component {
   {
     var options = []
     for(var i = 0; i < this.state.no_g; i++){
-      options.push(React.createElement('option', {"value" : i + 1, "key": i}, i+1))
+      options.push(React.createElement('option', {"value" : i, "key": i}, i))
     }
     return(<select onChange={this.setGroupConstraint(sid)}>{options}</select>)
   }
