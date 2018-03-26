@@ -62,7 +62,10 @@ class App extends Component {
         <div>
         <ul>
           {this.state.comfConst.map((cons, idx) => (
-            <li key={idx}>{this.makeConstBody(cons)}</li>
+            <li key={idx}>
+              {this.makeConstBody(cons)}
+              <button onClick={this.handleRemoveComf(cons.id)} > Remove </button>
+            </li>
           ))}
         </ul>
         </div>
@@ -114,17 +117,22 @@ class App extends Component {
   handleChangeNo_p = (evt) => {
     this.setState({no_p :evt.target.value});
   }
+  handleRemoveComf = (comfid) => () => {
+    this.setState({comfConst: this.state.comfConst.filter((comf) => comf.id !== comfid)});
+    this.setState({no_c : this.state.no_c - 1});
+  }
   handleAddComfort = () => (evt) => {
     var comfid = document.getElementById("comfList").value;
     var newcons = {id : this.state.cid, ctype: comfid};
     switch(comfid)
     {
       case "1":
-        newcons['t1'] = 1;
-        newcons['t2'] = 1;
+        newcons['t'] = 1;
+        newcons['p'] = 0;
+        newcons['d'] = 0;
         break;
       case "2":
-        newcons['t'] = 0;
+        newcons['t'] = 1;
         newcons['p'] = 0;
         newcons['d'] = 0;
         break;
@@ -147,7 +155,7 @@ class App extends Component {
         break;
       case "7":
         newcons['t'] = 1;
-        newcons['nd'] = 1;
+        newcons['nd'] = 6;
         break;
       case "8":
         newcons['g'] = 1;
@@ -159,7 +167,7 @@ class App extends Component {
         break;
       case "10":
         newcons['s'] = 1;
-        newcons['p'] = [];
+        newcons['p'] = 1;
         newcons['mode'] = 0;
         break;
       case "11":
@@ -207,64 +215,76 @@ class App extends Component {
   }
 
   makeConstBody = (cons) => {
+    var cBody;
     switch(cons.ctype)
     {
-      case "1": return (<span>Teacher: {this.createTlistComf(cons.id)}, not to be scheduled on day {this.createDlistComf(cons.id)} during period {this.createPlistComf(cons.id)} </span>);
-      case "": return (<span></span>);
-      case "": return (<span></span>);
-      case "": return (<span></span>);
-      case "5": return (<span>Teachers not to be alloted at the same time: {this.createTlistComf(cons.id, "t1")} and {this.createTlistComf(cons.id, "t2")}</span>) 
-      case "": return (<span></span>);
-      case "": return (<span></span>);
-      case "": return (<span></span>);
-      case "": return (<span></span>);
-      case "": return (<span></span>);
-      case "": return (<span></span>);
-      case "": return (<span></span>);
+      case "1": return (<span>Teacher: {this.createTlistComf(cons)} prefers not to be scheduled on day: {this.createDlistComf(cons)} during period: {this.createPlistComf(cons)} </span>);
+      case "2": return (<span>Teacher: {this.createTlistComf(cons)} prefers to be scheduled on day: {this.createDlistComf(cons)} during period: {this.createPlistComf(cons)} </span>);
+      case "3": return (<span>Group : {this.createGlistComf(cons)} prefers not to be scheduled on day {this.createDlistComf(cons)} during period {this.createPlistComf(cons)} </span>);
+      case "4": return (<span>Group : {this.createGlistComf(cons, "g1")} and Group : {this.createGlistComf(cons, "g2")} prefer not to be scheduled at the same time</span>);
+      case "5": return (<span>Techers {this.createTlistComf(cons, "t1")} and {this.createTlistComf(cons, "t2")} prefer not to be scheduled at the same time</span>);
+      case "6": return (<span>Techers {this.createTlistComf(cons, "t1")} and {this.createTlistComf(cons, "t2")} prefer to be scheduled at the same time</span>);
+      case "7": return (<span>Teacher : {this.createTlistComf(cons)} prefers to have classes on atmost {this.createNoDComf(cons)} days</span>);
+      case "8": return (<span>Group : {this.createGlistComf(cons)} prefers to have their classes limited to {this.createPlistComf(cons, "np")} periods</span>);
+      case "9": return (<span>Teacher : {this.createTlistComf(cons)} prefers to have atmost {this.createPlistComf(cons, "k")} idle periods per day.</span>);
+      case "10": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught during period: {this.createPlistComf(cons)}</span>);
+      case "11": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught on {this.createDlistComf(cons)}</span>);
+      case "12": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught on consecutive days</span>);
     }
   }
-  createSubListComf(cid, paramName='s')
+  askPreferComf(comf, paramName="mode")
+  {
+    return (<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]}>
+        <option value="1" key="1">preferred</option>
+        <option value="0" key="0">not preferred</option>
+      </select>)
+  }
+  createNoDComf(comf, paramName='nd')
+  {
+    return (<input type='number' min="1" max="7" onChange={this.setComfortParam(comf.id, paramName)} placeholder={comf[paramName]}/>)
+  }
+  createSubListComf(comf, paramName='s')
   {
     var options = []
     for(var i = 0; i < this.state.no_s; i++){
       options.push(React.createElement('option', {"value" : this.state.subs[i].id , "key": i}, "id: " + this.state.subs[i].id))
     }
     
-    return(<select onChange={this.setComfortParam(cid, paramName)} >{options}</select>)
+    return(<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]} >{options}</select>)
   }
-  createTlistComf(cid, paramName='t')
+  createTlistComf(comf, paramName='t')
   {
     var options = []
     for(var i = 0; i < this.state.no_t; i++){
       options.push(React.createElement('option', {"value" : i + 1 , "key": i}, i+1))
     }
     
-    return(<select onChange={this.setComfortParam(cid, paramName)} >{options}</select>)
+    return(<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]} >{options}</select>)
   }
-  createGlistComf(cid, paramName='g')
+  createGlistComf(comf, paramName='g')
   {
     var options = []
     for(var i = 0; i < this.state.no_g; i++){
       options.push(React.createElement('option', {"value" : i + 1, "key": i}, i+1))
     }
-    return(<select onChange={this.setComfortParam(cid, paramName)}>{options}</select>)
+    return(<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]}>{options}</select>)
   }
-  createDlistComf(cid, paramName='d')
+  createDlistComf(comf, paramName='d')
   {
-    var options = [];
+    var options = [React.createElement('option', {"value" : 0, "key": 0},  "All days")];
     var days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     for(var i = 0; i < this.state.dow; i++){
-      options.push(React.createElement('option', {"value" : i + 1, "key": i}, ((i+1).toString()) + " (" + days[i] + ")"));
+      options.push(React.createElement('option', {"value" : i + 1, "key": i + 1}, ((i+1).toString()) + " (" + days[i] + ")"));
     }
-    return(<select onChange={this.setComfortParam(cid, paramName)}>{options}</select>)
+    return(<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]}>{options}</select>)
   }
-  createPlistComf(cid, paramName='p')
+  createPlistComf(comf, paramName='p')
   {
-    var options = []
+    var options = [React.createElement('option', {"value" : 0, "key": 0},  "All periods")];
     for(var i = 0; i < this.state.no_p; i++){
-      options.push(React.createElement('option', {"value" : i + 1, "key": i}, i+1))
+      options.push(React.createElement('option', {"value" : i + 1, "key": i + 1}, i+1))
     }
-    return(<select onChange={this.setComfortParam(cid, paramName)}>{options}</select>)
+    return(<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]}>{options}</select>)
   }
   createTlist(sid)
   {
