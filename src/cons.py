@@ -150,32 +150,36 @@ def cardinality(vars, k):
     # T variables
     T_vars = {}
     for i in range(n):
-        T_vars[vars(i)] = []
+        T_vars[vars[i]] = []
         for g in range(k):
-            T_vars[vars(i)].append('Tgi', (g, i))
+            T_vars[vars[i]].append('Tgi', (g, i))
 
     # s variables
     bin_strings = {}
     for i in range(n):
-        bin_strings[vars(i)] = list('{:0{}}'.format(i, bin_size))
+        bin_strings[vars[i]] = list('{:0{}}'.format(i, bin_size))
 
     # B variables
     B_vars = {}
     for i in range(n):
-        B_vars[vars(i)] = {}
+        B_vars[vars[i]] = {}
         for g in range(k):
-            B_vars[vars(i)][g] = {}
+            B_vars[vars[i]][g] = {}
             for j in range(bin_size):
-                if(bin_strings[vars(i)][i] == '1'):
-                    B_vars[vars(i)][g][j] = ('Bgj', (g, j))
+                if(bin_strings[vars[i]][i] == '1'):
+                    B_vars[vars[i]][g][j] = ('Bgj', (g, j))
                 else:
-                    B_vars[vars(i)][g][j] = negation('Bgj', (g, j))
+                    B_vars[vars[i]][g][j] = negation('Bgj', (g, j))
 
     main_and_clause = []
     for i in range(n):
         T_or_list = []
         for g in range(max(1, (k - n + i)), min(i, k) + 1):
-            T_or_list.append(T_vars[vars(i)][g]) = T_vars[i][g]
+            '''
+            Please correct this statement
+            '''
+            # T_or_list.append(T_vars[vars[i]][g]) = T_vars[i][g]
+            pass
 
         or_clause_1 = ('or', negation(vars[i]), ('or', T_or_list))
         
@@ -183,7 +187,7 @@ def cardinality(vars, k):
         for g in range(max(1, (k - n + i)), min(i, k) + 1):
             and_list2 = []
             for j in range(bin_size):
-                and_list2.append('or', negation(T_vars[g][i], B_vars[vars(i)][g][j]))
+                and_list2.append('or', negation(T_vars[g][i], B_vars[vars[i]][g][j]))
 
             and_list1.append('and', and_list2)
 
@@ -238,3 +242,5 @@ def together(groups, t, s, n):
 
 
 # def cardinality(vars, k):
+
+
