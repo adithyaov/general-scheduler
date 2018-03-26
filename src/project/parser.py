@@ -1,8 +1,8 @@
 from z3 import *
 from implic import *
 
-result = {}
-sol_list = []
+result = {}							#stores result in Bool instance
+sol_list = []						
 graph = graph2
 truth_dict = {}
 bool_graph = {}
@@ -10,13 +10,13 @@ bool_graph = {}
 def DependsOn(pack, deps):			#Adding Implied variables
     return And([ Implies(pack, dep) for dep in deps ])
 
-def isNeg(v):
+def isNeg(v):						#check if ~ is applied
 	if(v[0][0] == '~'):
 		return True
 	else:
 		return False
 		
-def remTd(v):
+def remTd(v):						#remove ~ form vars
 	return (v[0][1:], v[1])
 	
 def vc(v):							#check for voids 
@@ -32,9 +32,22 @@ def vc(v):							#check for voids
 	
 def ParseVal(v):					#string to bool parser
 	if(v[0] == 'or'):
-		return Or([Not(ParseVal(remTd(b))) if isNeg(b) == True else ParseVal(b) for b in v[1] if vc(b) == True])
+		if len(v[1]) > 1:
+			return Or([Not(ParseVal(remTd(b))) if isNeg(b) == True else ParseVal(b) for b in v[1] if vc(b) == True])
+		else:
+			if isNeg(v[1][0]) == True:
+				return Not(ParseVal(remTd(v[1][0])))
+			else:
+				return ParseVal(v[1][0])
+					 
 	elif(v[0] == 'and'):
-		return And([Not(ParseVal(remTd(b))) if isNeg(b) == True else ParseVal(b) for b in v[1] if vc(b) == True])
+		if len(v[1]) > 1:
+			return And([Not(ParseVal(remTd(b))) if isNeg(b) == True else ParseVal(b) for b in v[1] if vc(b) == True])
+		else:
+			if isNeg(v[1][0]) == True:
+				return Not(ParseVal(remTd(v[1][0])))
+			else:
+				return ParseVal(v[1][0])
 	else:
 		if isNeg(v) == True:
 			return Not(Bool(str(remTd(v))))
@@ -65,6 +78,8 @@ for i in graph:						#z3 bool instance clause dict
 
 for i in bool_graph:				#z3 bool And expr				
 	sol_list.append(DependsOn(i,bool_graph[i]))
+
+sol_list.append(DependsOn(True, [ParseVal(v) for v in true_list if vc(v) == True])) #True_list expr
 
 m = makeTT(sol_list)
 truth_dict['True'] = []
