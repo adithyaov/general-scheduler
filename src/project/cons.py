@@ -10,7 +10,7 @@ def bic0(t, s, g, n):
 
 def bic1(t, s, g, n, d, p1, p2):
     truth = [
-        (p1 > np.min(periods[d])),
+        (p1 >= np.min(periods[d])),
         (p1 <= np.max(periods[d]) - duration[(t, s, g, n)] + 1),
         (p2 >= p1),
         (p2 <= p1 + duration[(t, s, g, n)] - 1)

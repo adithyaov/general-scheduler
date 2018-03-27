@@ -33,7 +33,7 @@ days = range(6)
 periods = []
 for _ in days:
     periods.append([0, 1, 2, 3, 4, 5])
-periods[0] = [0, 1, 2, 3]
+
 
 _duration = np.ones([num_t, num_s, num_g, n_max])
 
@@ -43,11 +43,8 @@ duration = {
 }
 '''
 duration = {
-    (0, 0, 0, 0): 2,
-    (0, 1, 0, 0): 3,
-    (1, 1, 0, 1): 3,
-    (1, 1, 1, 1): 3,
-    (1, 1, 1, 2): 3
+    (0, 0, 0, 0): 5
+    (0, 0, 0, 1): 2
 }
 
 '''
