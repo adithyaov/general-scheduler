@@ -1,5 +1,5 @@
 from z3 import *
-from implic import *
+from popo import *
 
 result = {}							#stores result in Bool instance
 sol_list = []						
