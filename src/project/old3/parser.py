@@ -17,7 +17,7 @@ def isNeg(v):						#check if ~ is applied
 		return False
 		
 def remTd(v):						#remove ~ form vars
-	return Not(Bool(str((v[0][1:], v[1]))))
+	return str((v[0][1:], v[1]))
 	
 def vc(v):							#check for voids 
 	if(len(v) == 0):
@@ -33,24 +33,24 @@ def vc(v):							#check for voids
 def ParseVal(v):					#string to bool parser
 	if(v[0] == 'or'):
 		if len(v[1]) > 1:
-			return Or([remTd(b) if isNeg(b) == True else ParseVal(b) for b in v[1] if vc(b) == True])
+			return Or([Not(Bool(remTd(b))) if isNeg(b) == True else ParseVal(b) for b in v[1] if vc(b) == True])
 		else:
 			if isNeg(v[1][0]) == True:
-				return remTd(v[1][0])
+				return Not(Bool(remTd(v[1][0])))
 			else:
 				return ParseVal(v[1][0])
 					 
 	elif(v[0] == 'and'):
 		if len(v[1]) > 1:
-			return And([remTd(b) if isNeg(b) == True else ParseVal(b) for b in v[1] if vc(b) == True])
+			return And([Not(Bool(remTd(b))) if isNeg(b) == True else ParseVal(b) for b in v[1] if vc(b) == True])
 		else:
 			if isNeg(v[1][0]) == True:
-				return remTd(v[1][0])
+				return Not(Bool(remTd(v[1][0])))
 			else:
 				return ParseVal(v[1][0])
 	else:
 		if isNeg(v) == True:
-			return remTd(v)
+			return Not(Bool(remTd(v)))
 		else:
 			return Bool(str(v))
 
@@ -79,16 +79,15 @@ for i in graph:						#z3 bool instance clause dict
         if len(graph[i][j]) > 0:
             bool_graph[ParseVal((i, j))] = [ParseVal(v) for v in graph[i][j] if vc(v) == True]
         else:
-            if i == 'x!tsgndp':
-                sol_list.append(Bool(str((i, j))) == False)
+            FLA += 1
 print FLA
 
 for i in bool_graph:				#z3 bool And expr				
-	sol_list.append(Implies(i,And(bool_graph[i])))
+	sol_list.append(DependsOn(i,bool_graph[i]))
 
-true_bool = And([ParseVal(v) for v in true_list if vc(v) == True])
+true_bool = [ParseVal(v) for v in true_list if vc(v) == True]
 
-sol_list.append(Implies(True, true_bool)) #True_list expr
+sol_list.append(DependsOn(True, true_bool)) #True_list expr
 
 m = makeTT(sol_list)
 truth_dict['True'] = []
