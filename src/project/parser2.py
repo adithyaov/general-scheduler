@@ -79,7 +79,8 @@ for i in graph:						#z3 bool instance clause dict
         if len(graph[i][j]) > 0:
             bool_graph[ParseVal((i, j))] = [ParseVal(v) for v in graph[i][j] if vc(v) == True]
         else:
-            FLA += 1
+            if i == 'x!tsgndp':
+                sol_list.append(Bool(str((i, j))) == False)
 print FLA
 
 for i in bool_graph:				#z3 bool And expr				
