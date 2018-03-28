@@ -155,7 +155,6 @@ def together(groups, t, s, n):
     return
 
 
-
 class Cardinality:
     '''
     Condition that is satisfied when atmost k variables
@@ -173,12 +172,11 @@ class Cardinality:
 
         self.vars = vars
         self.k = k
-
         self.n = len(vars)
         self.bin_size = int(math.ceil(math.log(self.n, 2)))
 
-        self.group_count += 1
-        self.vars_dict[self.group_count] = vars
+        Cardinality.group_count += 1
+        Cardinality.vars_dict[Cardinality.group_count] = vars
 
     def form(self):
         '''
@@ -188,15 +186,14 @@ class Cardinality:
         # Auxillary variables
         # --------------------
         # Auxillary variables are tagged for each cardinalty
-        # group constraint with a non negative number
-        # (currently incrementally).
+        # group constraint with a non negative number (group_count).
 
         # T variables
         T_vars = {}
         for g in range(self.k):
             T_vars[g] = {}
             for i in range(self.n):
-                T_vars[g][i] = ('Tgi', (g, i, self.group_count))
+                T_vars[g][i] = ('Tgi', (g, i, Cardinality.group_count))
 
         # s variables
         bin_strings = {}
@@ -211,10 +208,10 @@ class Cardinality:
                 B_vars[i][g] = {}
                 for j in range(self.bin_size):
                     if(bin_strings[i][j] == '1'):
-                        B_vars[i][g][j] = ('Bgj', (g, j, self.group_count))
+                        B_vars[i][g][j] = ('Bgj', (g, j, Cardinality.group_count))
                     else:
                         B_vars[i][g][j] = negation(
-                            ('Bgj', (g, j, self.group_count)))
+                            ('Bgj', (g, j, Cardinality.group_count)))
 
         main_and_clause = []
         for i in range(self.n):

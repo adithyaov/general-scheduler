@@ -291,7 +291,7 @@ Check the previous 2 implications.
 
 
 
-
+print graph2['x!tsgndp'].keys()
 
 
 
