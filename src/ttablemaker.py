@@ -1,15 +1,14 @@
 from parser import *
 from tabulate import tabulate
 
-scheduled = truth_dict2['xtsgndp']
+scheduled = result_graph['xtsgndp'][True]
 
 ttable = [[ [] for i in range(len(periods)) ] for i in range(len(days))]
 
-for x in scheduled:
-    cl = map(int, x.replace('(','').replace(')','').split(','))
-    ttable[cl[4]][cl[5]].append(cl[:-2])
+for (t, s, g, n, d, p) in scheduled:
+    ttable[d][p].append((t, s, g, n))
 
 for i in range(len(ttable)):
-    ttable[i].insert(0, "Day" + str(i))
+    ttable[i].insert(0, "Day {}".format(str(i)))
 
-print tabulate(ttable,headers=["X"]+periods[1], tablefmt='fancy_grid').encode('utf-8')
+print tabulate(ttable, headers=["X"]+max(periods), tablefmt='fancy_grid').encode('utf-8')

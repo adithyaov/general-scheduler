@@ -1,5 +1,5 @@
 from var import *
-import math
+import numpy as np
 
 def bic0(t, s, g, n):
     truth = [
@@ -171,7 +171,7 @@ class Cardinality:
         self.vars = vars
         self.k = k
         self.n = len(vars)
-        self.bin_size = int(math.ceil(math.log(self.n, 2)))
+        self.bin_size = int(np.ceil(np.log(self.n, 2)))
 
         Cardinality.group_count += 1
         Cardinality.vars_dict[Cardinality.group_count] = vars

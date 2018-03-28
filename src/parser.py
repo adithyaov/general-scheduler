@@ -1,7 +1,7 @@
 from z3 import *
 from test_diff_loop import *
 
-result = {}				#stores result in Bool instance
+var_result = {}				#stores result in Bool instance
 sol_list = []
 truth_dict = {}
 bool_graph = {}
@@ -24,46 +24,38 @@ def makeTT(*args, **keywords):		#Time table SAT solver
 		print s
 	r = s.check()
 	if r == unsat:
-		print "no solution"
+		return (False, 'No Solution')
 	elif r == unknown:
-		print "failed to solve"
-		try:
-			print s.model()
-		except Z3Exception:
-			return
+		return (False, 'Failed to solve')
 	else:
-		return s.model()
+		return (True, s.model())
 
 for i in graph:						#z3 bool instance clause dict
     for j in graph[i]:
-        bool_graph[ParseVal((i, j))] = ParseVal(graph[i][j])
-        
-for i in bool_graph:					#z3 bool And expr				
-	sol_list.append(Implies(i,bool_graph[i]))
+    	sol_list.append(Implies(ParseVal((i, j)), ParseVal(graph[i][j])))
 
 sol_list.append(Implies(True, ParseVal(true_list))) 	#True_list expr
 
-m = makeTT(sol_list)
-truth_dict['True'] = []
-truth_dict['False'] = []
+time_table = makeTT(sol_list)
+
+if time_table[0] == False:
+	exit(0)
+
+m = time_table[1]
 
 for x in m.decls():
-	result[x] = m[x]
-	truth_dict[str(m[x])].append(x)
+	var_result[x] = bool(m[x])
 
-result2 = {}
-truth_dict2 = {}
+result_graph = {}
 
-for x in result:
+for x in var_result:
 	y = str(x)[2:-1].split('\', ')
-	result2[y[0]] = {}
-	truth_dict2[y[0]] = []
+	result_graph[y[0]] = {
+		True: [],
+		False: []
+	}
 	
-for x in result:
+for x in var_result:
 	y = str(x)[2:-1].split('\', ')
-	result2[y[0]][y[1]] = result[x]
-	if(result[x] == True):
-		truth_dict2[y[0]].append(y[1])
+	result_graph[y[0]][var_result[x]].append(tuple(map(int, y[1][1:-1].split(','))))
 
-# result2 : dict has result in init graph form
-# truth_dict2 : dict has True states of vars#
