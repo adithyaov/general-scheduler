@@ -15,84 +15,109 @@ teacher_forbidden0 = [(t, d, p)]
 teacher_forbidden1 = [(t, d)]
 teacher_forbidden2 = [(t, p)]
 
-for (t, d, p) in teacher_forbidden0:
-    comfort_true_list.append(negation(('xtdp', (t, d, p))))
+teacher_requested0 = [(t, d, p)]
+teacher_requested1 = [(t, d)]
+teacher_requested2 = [(t, p)]
 
-for (t, d) in teacher_forbidden1:
-    comfort_true_list.append(negation(('xtd', (t, d))))
+if not teacher_forbidden0:
+    for (t, d, p) in teacher_forbidden0:
+        comfort_true_list.append(negation(('xtdp', (t, d, p))))
 
-for (t, p) in teacher_forbidden0:
-    comfort_true_list.append(negation(('xtp', (t, p))))
+if not teacher_forbidden1:
+    for (t, d) in teacher_forbidden1:
+        comfort_true_list.append(negation(('xtd', (t, d))))
 
-for (t, d, p) in teacher_requested0:
-    comfort_true_list.append(('xtdp', (t, d, p)))
+if not teacher_forbidden2:
+    for (t, p) in teacher_forbidden2:
+        comfort_true_list.append(negation(('xtp', (t, p))))
 
-for (t, d) in teacher_requested1:
-    comfort_true_list.append(('xtd', (t, d)))
+if not teacher_requested0:
+    for (t, d, p) in teacher_requested0:
+        comfort_true_list.append(('xtdp', (t, d, p)))
 
-for (t, p) in teacher_requested2:
-    comfort_true_list.append(('xtp', (t, p)))
+if not teacher_requested1:
+    for (t, d) in teacher_requested1:
+        comfort_true_list.append(('xtd', (t, d)))
+
+if not teacher_requested2:
+    for (t, p) in teacher_requested2:
+        comfort_true_list.append(('xtp', (t, p)))
 
 group_forbidden0 = [(g, d, p)]
 group_forbidden1 = [(g, d)]
 group_forbidden2 = [(g, p)]
 
-for (g, d, p) in group_forbidden0:
-    comfort_true_list.append(negation(('xgdp', (g, d, p))))
+group_requested0 = [(g, d, p)]
+group_requested1 = [(g, d)]
+group_requested2 = [(g, p)]
 
-for (g, d) in group_forbidden1:
-    comfort_true_list.append(negation(('xgd', (g, d))))
+if not group_forbidden0:
+    for (g, d, p) in group_forbidden0:
+        comfort_true_list.append(negation(('xgdp', (g, d, p))))
 
-for (g, p) in group_forbidden0:
-    comfort_true_list.append(negation(('xgp', (g, p))))
+if not group_forbidden1:
+    for (g, d) in group_forbidden1:
+        comfort_true_list.append(negation(('xgd', (g, d))))
 
-for (g, d, p) in group_requested0:
-    comfort_true_list.append(('xgdp', (g, d, p)))
+if not group_forbidden2:
+    for (g, p) in group_forbidden2:
+        comfort_true_list.append(negation(('xgp', (g, p))))
 
-for (g, d) in group_requested1:
-    comfort_true_list.append(('xgd', (g, d)))
+if not group_requested0:
+    for (g, d, p) in group_requested0:
+        comfort_true_list.append(('xgdp', (g, d, p)))
 
-for (g, p) in group_requested2:
-    comfort_true_list.append(('xgp', (g, p)))
+if not group_requested1:
+    for (g, d) in group_requested1:
+        comfort_true_list.append(('xgd', (g, d)))
+
+if not group_requested2:
+    for (g, p) in group_requested2:
+        comfort_true_list.append(('xgp', (g, p)))
 
 
 # 2) Avoiding groups and teachers overlapping
 
 teacher_no_overlap = [(t1, t2)]
-for (t1, t2) in teacher_no_overlap:
-    for d in days:
-        for p in periods[d]:
-            comfort_graph['xtdp'][(t1, d, p)].append(
-                negation(('xtdp', (t2, d, p))))
-            comfort_graph['xtdp'][(t2, d, p)].append(
-                negation(('xtdp', (t1, d, p))))
+
+if not teacher_no_overlap:
+    for (t1, t2) in teacher_no_overlap:
+        for d in days:
+            for p in periods[d]:
+                comfort_graph['xtdp'][(t1, d, p)].append(
+                    negation(('xtdp', (t2, d, p))))
+                comfort_graph['xtdp'][(t2, d, p)].append(
+                    negation(('xtdp', (t1, d, p))))
 
 group_no_overlap = [(g1, g2)]
-for (g1, g2) in group_no_overlap:
-    for d in days:
-        for p in periods[d]:
-            comfort_graph['xgdp'][(g1, d, p)].append(
-                negation(('xgdp', (g2, d, p))))
-            comfort_graph['xgdp'][(g2, d, p)].append(
-                negation(('xgdp', (g1, d, p))))
+
+if not group_no_overlap:
+    for (g1, g2) in group_no_overlap:
+        for d in days:
+            for p in periods[d]:
+                comfort_graph['xgdp'][(g1, d, p)].append(
+                    negation(('xgdp', (g2, d, p))))
+                comfort_graph['xgdp'][(g2, d, p)].append(
+                    negation(('xgdp', (g1, d, p))))
 
 # 3) Number of teaching days for a teacher
 
 teaching_days = [(t, n)]        # n <= d
 no_of_days = len(days)
 
-for (t, n) in teaching_days:
-    atmost_var_list = []
-    atleast_var_list = []
-    for d in days:
-        atmost_var_list.append(('xtd', (t, d)))
-        atleast_var_list.append(negation(('xtd', (t, d))))
-
-    atmost_n = Cardinality(atmost_var_list, n)
-    comfort_true_list.append(atmost_n.form())
-
-    atleast_n = Cardinality(atleast_var_list, (no_of_days - n))
-    comfort_true_list.append(atleast_n.form())
+if not teaching_days:
+    for (t, n) in teaching_days:
+        atmost_var_list = []
+        atleast_var_list = []
+        for d in days:
+            atmost_var_list.append(('xtd', (t, d)))
+            atleast_var_list.append(negation(('xtd', (t, d))))
+    
+        atmost_n = Cardinality(atmost_var_list, n)
+        comfort_true_list.append(atmost_n.form())
+    
+        atleast_n = Cardinality(atleast_var_list, (no_of_days - n))
+        comfort_true_list.append(atleast_n.form())
 
 # 4) Work day duration: ('xgdp' ∧ 'xgd(p+k−1)') => 'lkgd' min(periods(d)) <= p <= max(periods(d)) - k + 1
 #                     ('lkgd' => (or, ('xgdp' ^ 'xgd(p+k-1)')) min(periods(d)) <= p  <= max(periods(d)) - k+1
@@ -102,32 +127,48 @@ for (t, n) in teaching_days:
 
 work_day_duration = [(g, k, d)]
 
-for (g, k, d) in work_day_duration:
-    comfort_graph['lkgd'][(g, k, d)] = []
-
-    or_list = []
-    for p in range(min(periods[d]), max(periods[d]) - k + 2):
-        or_list.append(('and', [('xgdp', (g, d, p)), ('xgdp', (g, d, p + k - 1))]))
-        comfort_true_list.append(('or', [negation(('xgdp', (g, d, p))), negation(('xgdp', (g, d, p + k - 1))), ('lkgd', (k, g, d))]))
-
-    comfort_graph['lkgd'][(g, k, d)].append(('or', or_list))
+if not work_day_duration:
+    for (g, k, d) in work_day_duration:
+        comfort_graph['lkgd'][(g, k, d)] = []
+    
+        or_list = []
+        for p in range(min(periods[d]), max(periods[d]) - k + 2):
+            or_list.append(('and', [('xgdp', (g, d, p)), ('xgdp', (g, d, p + k - 1))]))
+            comfort_true_list.append(('or', [negation(('xgdp', (g, d, p))), negation(('xgdp', (g, d, p + k - 1))), ('lkgd', (k, g, d))]))
+    
+        comfort_graph['lkgd'][(g, k, d)].append(('or', or_list))
 
 # Atmost n hours on day d for group g 
 duration_upper_limit = [(g, d, n)]
 
-for (g, d, n) in duration_upper_limit:
-    for k in range(n, max(periods[d]) + 1):
-        comfort_true_list.append(negation(('lkgd', (k, g, d))))
+if not atmost_one_idle_period:
+    for (g, d, n) in duration_upper_limit:
+        for k in range(n, max(periods[d]) + 1):
+            comfort_true_list.append(negation(('lkgd', (k, g, d))))
 
 # Atleast n hours on day d for group g
 duration_lower_limit = [(g, d, n)]
 
-for (g, d, n) in duration_lower_limit:
-    for 
-
-
+if not atmost_one_idle_period:
+    for (g, d, n) in duration_lower_limit:
+        comfort_graph['xgd'][(g, d)].append(('lkgd', (n, g, d)))  # Not convinced
 
 # 5) Idle duration cardinality('xtgdp')
+
+# Idle periods of length k not allowed
+max_idle_length = [(k, t)]
+
+if not atmost_one_idle_period:
+    for (k, t) in max_idle_length:
+        comfort_true_list.append(negation(('ikt', (k, t))))
+
+# Atmost one idle period for a teacher
+atmost_one_idle_period = [t]
+
+if not atmost_one_idle_period:
+    comfort_true_list.append(single())
+
+
 
 # 6) Forbidden hours and requested hours:
 #       favoured periods: 'xtsgnd' => 'x!tsgndp1' or ...
