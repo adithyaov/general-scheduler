@@ -3,12 +3,6 @@ import ReactDOM from 'react-dom';
 import './App.css';
 import comfortList from './comfortList.json'
 
-function makeTTable(ttable)
-  {
-    console.log("Generating Time Table")
-    console.log(ttable);
-  }
-
 class App extends Component {
   constructor(props){
     super(props);
@@ -29,39 +23,39 @@ class App extends Component {
 
   StartWebSocket = (currstate) => (evt) =>
   {
-     var ws = new WebSocket("ws://localhost:8888/ws");
-     ws.onopen = function()
+     this.ws = new WebSocket("ws://localhost:8888/ws");
+     this.ws.onopen = () =>
      {
-        ws.send("knock");
+        this.ws.send("knock");
         console.log("socket opened");
      };
 
-     ws.onmessage = function (evt) 
+     this.ws.onmessage = (evt) =>
      { 
         var rec_msg = evt.data;
         console.log("Message received..." + rec_msg);
         if(rec_msg === 'yes')
         {
           console.log("Connected");
-          ws.send(JSON.stringify(currstate))
+          this.ws.send(JSON.stringify(this.state))
         }
         else
         {
           if(rec_msg.startsWith("["))
           {
-            makeTTable(JSON.parse(rec_msg))
+            this.maketables(JSON.parse(rec_msg))
           }
         }
      };
 
-     ws.onclose = function()
+     this.ws.onclose = () =>
      { 
         // websocket is closed.
         alert("Connection is closed..."); 
      };
 
-     window.onbeforeunload = function(event) {
-        ws.close();
+     window.onbeforeunload = (event) => {
+        this.ws.close();
      };
     
   }
