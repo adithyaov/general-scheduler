@@ -117,12 +117,10 @@ def bic13(d, p):
 
 
 def negation(var):
-    var_to_modify = list(var)
-    if var[0][0] == '~':
-        var_to_modify[0] = var[0][1:]
+    if var[0] == 'not':
+        return var[1]
     else:
-        var_to_modify[0] = '~' + var[0]
-    return tuple(var_to_modify)
+        return ('not', var)
 
 
 def single(vars):
