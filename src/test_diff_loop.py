@@ -88,7 +88,6 @@ for (t, s, g, n, d, p) in graph2['xtsgndp'].keys():
     graph2['xtsgndp'][(t, s, g, n, d, p)].append(('xtsgnd', (t, s, g, n, d)))
     graph2['xtsgndp'][(t, s, g, n, d, p)].append(('xtdp', (t, d, p)))
     graph2['xtsgndp'][(t, s, g, n, d, p)].append(('xgdp', (g, d, p)))
-    print graph2['xtsgndp']
 
 
 for (t, s, g, n, d) in graph2['xtsgnd'].keys():
