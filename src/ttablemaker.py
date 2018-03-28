@@ -12,4 +12,4 @@ for x in scheduled:
 for i in range(len(ttable)):
     ttable[i].insert(0, "Day" + str(i))
 
-print tabulate(ttable,headers=["X"]+periods[0], tablefmt='fancy_grid')
+print tabulate(ttable,headers=["X"]+periods[1], tablefmt='fancy_grid').encode('utf-8')
