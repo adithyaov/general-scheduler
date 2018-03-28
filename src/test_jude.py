@@ -30,13 +30,19 @@ class Cardinality:
         self.n = len(vars)
         self.bin_size = int(math.ceil(math.log(self.n, 2)))
 
+        if k > self.n or k < 0:
+            return "Error !"
+
         Cardinality.group_count += 1
         Cardinality.vars_dict[Cardinality.group_count] = vars
+        return
 
     def form(self):
         '''
         Returns a sat for the given cardinality object
         '''
+        if (self.k == 0):
+            return (negation(('or', [self.vars])))
 
         # Auxillary variables
         # --------------------
