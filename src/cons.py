@@ -269,7 +269,7 @@ def filter_graph():
     for var_type in graph.keys():
         for var_tup in graph[var_type].keys():
             new_bool_list = filter_bool(graph[var_type][var_tup])
-            if new_bool_list == False:
+            if new_bool_list == None:
                 graph[var_type].pop(var_tup)
             else:
                 graph[var_type][var_tup] = new_bool_list
