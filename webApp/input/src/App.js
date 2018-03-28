@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom';
 import './App.css';
 import comfortList from './comfortList.json'
 
+function makeTTable(ttable)
+  {
+    console.log("Generating Time Table")
+    console.log(ttable);
+  }
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -19,6 +25,51 @@ class App extends Component {
       comforts: comfortList.comforts,
       comfConst: [],
     }
+  }
+
+  StartWebSocket = (currstate) => (evt) =>
+  {
+     var ws = new WebSocket("ws://localhost:8888/ws");
+     ws.onopen = function()
+     {
+        ws.send("knock");
+        console.log("socket opened");
+     };
+
+     ws.onmessage = function (evt) 
+     { 
+        var rec_msg = evt.data;
+        console.log("Message received..." + rec_msg);
+        if(rec_msg === 'yes')
+        {
+          console.log("Connected");
+          ws.send(JSON.stringify(currstate))
+        }
+        else
+        {
+          if(rec_msg.startsWith("["))
+          {
+            makeTTable(JSON.parse(rec_msg))
+          }
+        }
+     };
+
+     ws.onclose = function()
+     { 
+        // websocket is closed.
+        alert("Connection is closed..."); 
+     };
+
+     window.onbeforeunload = function(event) {
+        ws.close();
+     };
+    
+  }
+
+  maketables = (data) =>
+  {
+    console.log("Making all tables");
+    console.log(data);
   }
 
   render() {
@@ -70,7 +121,7 @@ class App extends Component {
         </ul>
         </div>
         <div>
-          <button onClick={this.sendState()}>Send</button>
+          <button onClick={this.StartWebSocket(this.state)}>Send</button>
         </div>
         </div>
     );
@@ -313,7 +364,7 @@ class App extends Component {
     })
     return (<select id="comfList" key={this.state.cid}>{listElem}</select>)
   }
-  sendState()
+  sendState = () => (evt) =>
   {
     var req = new XMLHttpRequest();
     req.open('POST', '/input', false);
@@ -323,3 +374,4 @@ class App extends Component {
 }
 
 export default App;
+
