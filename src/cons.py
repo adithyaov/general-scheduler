@@ -154,87 +154,84 @@ def together(groups, t, s, n):
                         ]))
     return
 
-# class cardinality:
-#     '''
-#     Condition that is satisfied when atmost k variables
-#     are satisfied in the given variable list (vars).
 
-#     The form method return a sat for the cardinality object 
+class Cardinality:
+    '''
+    Condition that is satisfied when atmost k variables
+    are satisfied in the given variable list (vars).
 
-#     The encoding used is binary and symmetric breaking
-#     '''
-#     group_count = 0
-#     aux_vars_dict = {}
-#     vars_dict = {}
+    The form method return a sat for the cardinality object 
 
-#     def __init__(self, vars, k):
+    The encoding used is binary and symmetric breaking
+    '''
+    group_count = 0
+    aux_vars_dict = {}
+    vars_dict = {}
 
-#         self.vars = vars
-#         self.k = k
+    def __init__(self, vars, k):
 
-#         n = len(vars)
-#         bin_size = math.ceil(math.log(n) / math.log(2))
+        self.vars = vars
+        self.k = k
+        self.n = len(vars)
+        self.bin_size = int(math.ceil(math.log(self.n, 2)))
 
-#         group_count += 1
-#         vars_dict[group_count] = vars
+        Cardinality.group_count += 1
+        Cardinality.vars_dict[Cardinality.group_count] = vars
 
-#     def form(self):
-#         '''
-#         Returns a sat for the given cardinality object
-#         '''
+    def form(self):
+        '''
+        Returns a sat for the given cardinality object
+        '''
 
-#         # Auxillary variables
-#         # --------------------
-#         # Auxillary variables are tagged for each cardinalty
-#         # group constraint with a non negative number
-#         # (currently incrementally). Such feature would require
-#         # the emulation of static variable found in c
-#         # Classes will be implemented to
+        # Auxillary variables
+        # --------------------
+        # Auxillary variables are tagged for each cardinalty
+        # group constraint with a non negative number (group_count).
 
-#         # T variables
-#         T_vars = {}
-#         for g in range(k):
-#             T_vars[g] = {}
-#             for i in range(n):
-#                 T_vars[g][i].append('Tgi', (g, i, group_count))
+        # T variables
+        T_vars = {}
+        for g in range(self.k):
+            T_vars[g] = {}
+            for i in range(self.n):
+                T_vars[g][i] = ('Tgi', (g, i, Cardinality.group_count))
 
-#         # s variables
-#         bin_strings = {}
-#         for i in range(n):
-#             bin_strings[i] = list('{:0{}b}'.format(i, bin_size))
+        # s variables
+        bin_strings = {}
+        for i in range(self.n):
+            bin_strings[i] = list('{:0{}b}'.format(i, self.bin_size))
 
-#         # B variables
-#         B_vars = {}
-#         for i in range(n):
-#             B_vars[i] = {}
-#             for g in range(k):
-#                 B_vars[i][g] = {}
-#                 for j in range(bin_size):
-#                     if(bin_strings[i][j] == '1'):
-#                         B_vars[i][g][j] = ('Bgj', (g, j, group_count))
-#                     else:
-#                         B_vars[i][g][j] = negation(
-#                             'Bgj', (g, j, group_count))
+        # B variables
+        B_vars = {}
+        for i in range(self.n):
+            B_vars[i] = {}
+            for g in range(self.k):
+                B_vars[i][g] = {}
+                for j in range(self.bin_size):
+                    if(bin_strings[i][j] == '1'):
+                        B_vars[i][g][j] = ('Bgj', (g, j, Cardinality.group_count))
+                    else:
+                        B_vars[i][g][j] = negation(
+                            ('Bgj', (g, j, Cardinality.group_count)))
 
-#         main_and_clause = []
-#         for i in range(n):
-#             T_or_list = []
-#             for g in range(max(1, (k - n + i)), min(i, k) + 1):
-#                 T_or_list.append(T_vars[g][i]) = T_vars[g][i]
+        main_and_clause = []
+        for i in range(self.n):
+            T_or_list = []
+            for g in range(max(0, (self.k - self.n + i)), min(i, self.k - 1) + 1):
+                T_or_list.append(T_vars[g][i])
 
-#             or_clause_1 = ('or', negation(vars[i]), ('or', T_or_list))
+            or_clause_1 = ('or', negation(self.vars[i]), ('or', T_or_list))
 
-#             and_list1 = []
-#             for g in range(max(1, (k - n + i)), min(i, k) + 1):
-#                 and_list2 = []
-#                 for j in range(bin_size):
-#                     and_list2.append('or', negation(
-#                         T_vars[g][i]), B_vars[i][g][j])
+            and_list1 = []
+            for g in range(max(0, (self.k - self.n + i)), min(i, self.k - 1) + 1):
+                and_list2 = []
+                for j in range(self.bin_size):
+                    and_list2.append(('or', negation(
+                        T_vars[g][i]), B_vars[i][g][j]))
 
-#                 and_list1.append('and', and_list2)
+                and_list1.append(('and', and_list2))
 
-#             and_clause_1 = ('and', and_list1)
+            and_clause_1 = ('and', and_list1)
 
-#             main_and_clause.append('and', or_clause_1, and_clause_1)
+            main_and_clause.append(('and', or_clause_1, and_clause_1))
 
-#         return ('and', main_and_clause)
+        return ('and', main_and_clause)
