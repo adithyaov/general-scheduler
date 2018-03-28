@@ -1,4 +1,4 @@
-from parser2 import *
+from parser import *
 from tabulate import tabulate
 
 #c = 0
