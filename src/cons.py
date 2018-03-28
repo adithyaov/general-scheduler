@@ -10,7 +10,7 @@ def bic0(t, s, g, n):
 
 def bic1(t, s, g, n, d, p1, p2):
     truth = [
-        (p1 > np.min(periods[d])),
+        (p1 >= np.min(periods[d])),
         (p1 <= np.max(periods[d]) - duration[(t, s, g, n)] + 1),
         (p2 >= p1),
         (p2 <= p1 + duration[(t, s, g, n)] - 1)
@@ -117,12 +117,10 @@ def bic13(d, p):
 
 
 def negation(var):
-    var_to_modify = list(var)
-    if var[0][0] == '~':
-        var_to_modify[0] = var[0][1:]
+    if var[0] == 'not':
+        return var[1]
     else:
-        var_to_modify[0] = '~' + var[0]
-    return tuple(var_to_modify)
+        return ('not', var)
 
 
 def single(vars):
@@ -235,3 +233,43 @@ class Cardinality:
             main_and_clause.append(('and', or_clause_1, and_clause_1))
 
         return ('and', main_and_clause)
+
+
+def filter_bool(bool_tuple):
+    '''
+    Filters the void implications
+    '''
+    if type(bool_tuple) == type([]):
+        bool_tuple = ('and', bool_tuple)
+
+    if bool_tuple[0] != 'and' and bool_tuple[0] != 'or':
+        return bool_tuple
+
+    bool_list = bool_tuple[1]
+    if len(bool_list) == 0:
+        return None
+
+    if len(bool_list) == 1:
+        return bool_list[0]
+
+    new_list = []
+    for x in bool_list:
+        new_x = filter_bool(x)
+
+        if new_x != None:
+            new_list.append(new_x)
+
+    return (bool_tuple[0], new_list)
+
+
+def filter_graph():
+    '''
+    Filters all void implication
+    '''
+    for var_type in graph.keys():
+        for var_tup in graph[var_type].keys():
+            new_bool_list = filter_bool(graph[var_type][var_tup])
+            if new_bool_list == None:
+                graph[var_type].pop(var_tup)
+            else:
+                graph[var_type][var_tup] = new_bool_list

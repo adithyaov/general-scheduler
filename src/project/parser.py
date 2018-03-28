@@ -1,59 +1,21 @@
 from z3 import *
 from popo import *
 
-result = {}							#stores result in Bool instance
-sol_list = []						
-graph = graph2
+result = {}												#stores result in Bool instance
+sol_list = []
 truth_dict = {}
 bool_graph = {}
 
-def DependsOn(pack, deps):			#Adding Implied variables
-    return And([ Implies(pack, dep) for dep in deps ])
-
-def isNeg(v):						#check if ~ is applied
-	if(v[0][0] == '~'):
-		return True
-	else:
-		return False
-		
-def remTd(v):						#remove ~ form vars
-	return (v[0][1:], v[1])
-	
-def vc(v):							#check for voids 
-	if(len(v) == 0):
-		return False
-	elif(v[0] == 'or' or v[0] == 'and'):
-		if(len(v[1]) > 0):
-			return True
-		else:
-			return False
-	else:
-		return True
-	
-def ParseVal(v):					#string to bool parser
-	if(v[0] == 'or'):
-		if len(v[1]) > 1:
-			return Or([Not(ParseVal(remTd(b))) if isNeg(b) == True else ParseVal(b) for b in v[1] if vc(b) == True])
-		else:
-			if isNeg(v[1][0]) == True:
-				return Not(ParseVal(remTd(v[1][0])))
-			else:
-				return ParseVal(v[1][0])
-					 
+def ParseVal(v):
+	if(v[0] == 'not'):
+		return Not(Bool(str(v[1])))
+	elif(v[0] == 'or'):
+		return Or([ ParseVal(b) for b in v[1] ])					 
 	elif(v[0] == 'and'):
-		if len(v[1]) > 1:
-			return And([Not(ParseVal(remTd(b))) if isNeg(b) == True else ParseVal(b) for b in v[1] if vc(b) == True])
-		else:
-			if isNeg(v[1][0]) == True:
-				return Not(ParseVal(remTd(v[1][0])))
-			else:
-				return ParseVal(v[1][0])
+		return And([ ParseVal(b) for b in v[1] ])
 	else:
-		if isNeg(v) == True:
-			return Not(Bool(str(remTd(v))))
-		else:
-			return Bool(str(v))
-
+		return Bool(str(v))
+	
 def makeTT(*args, **keywords):		#Time table SAT solver
 	s = Solver()
 	s.set(**keywords)
@@ -72,14 +34,14 @@ def makeTT(*args, **keywords):		#Time table SAT solver
 	else:
 		return s.model()
 
-for i in graph:						#z3 bool instance clause dict
-	for j in graph[i]:
-		bool_graph[ParseVal((i, j))] = [ParseVal(v) for v in graph[i][j] if vc(v) == True]
-
+for i in graph:										#z3 bool instance clause dict
+    for j in graph[i]:
+        bool_graph[ParseVal((i, j))] = ParseVal(graph[i][j])
+        
 for i in bool_graph:				#z3 bool And expr				
-	sol_list.append(DependsOn(i,bool_graph[i]))
+	sol_list.append(Implies(i,bool_graph[i]))
 
-sol_list.append(DependsOn(True, [ParseVal(v) for v in true_list if vc(v) == True])) #True_list expr
+sol_list.append(Implies(True, filter_bool(true_list))) #True_list expr
 
 m = makeTT(sol_list)
 truth_dict['True'] = []

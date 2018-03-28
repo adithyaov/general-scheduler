@@ -2,22 +2,22 @@ import numpy as np
 
 true_list = []
 
-graph2 = {}
-graph2['x!tsgndp'] = {}
-graph2['xtsgndp'] = {}
-graph2['xtsgnd'] = {}
-graph2['xtdp'] = {}
-graph2['xgdp'] = {}
-graph2['xtd'] = {}
-graph2['xtp'] = {}
-graph2['iktdp'] = {}
-graph2['iktd'] = {}
-graph2['ikt'] = {}
-graph2['ikgdp'] = {}
-graph2['ikgd'] = {}
-graph2['ikg'] = {}
-graph2['itdp'] = {}
-graph2['igdp'] = {}
+graph = {}
+graph['x!tsgndp'] = {}
+graph['xtsgndp'] = {}
+graph['xtsgnd'] = {}
+graph['xtdp'] = {}
+graph['xgdp'] = {}
+graph['xtd'] = {}
+graph['xtp'] = {}
+graph['iktdp'] = {}
+graph['iktd'] = {}
+graph['ikt'] = {}
+graph['ikgdp'] = {}
+graph['ikgd'] = {}
+graph['ikg'] = {}
+graph['itdp'] = {}
+graph['igdp'] = {}
 
 num_t = 10
 num_s = 10
@@ -43,11 +43,14 @@ duration = {
 }
 '''
 duration = {
-    (0, 0, 0, 0): 2,
-    (0, 1, 0, 0): 3,
-    (1, 1, 0, 1): 3,
-    (1, 1, 1, 1): 3,
-    (1, 1, 1, 2): 3
+    (0, 0, 0, 1): 4,
+    (0, 0, 1, 2): 4,
+    (0, 1, 0, 2): 4,
+    (0, 1, 1, 2): 4,
+    (1, 0, 0, 2): 4,
+    (1, 0, 1, 2): 4,
+    (1, 1, 0, 2): 4,
+    (1, 1, 1, 2): 4
 }
 
 '''
