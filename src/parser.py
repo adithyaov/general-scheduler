@@ -1,7 +1,7 @@
 from z3 import *
-from popo import *
+from test_diff_loop import *
 
-result = {}												#stores result in Bool instance
+result = {}				#stores result in Bool instance
 sol_list = []
 truth_dict = {}
 bool_graph = {}
@@ -34,14 +34,14 @@ def makeTT(*args, **keywords):		#Time table SAT solver
 	else:
 		return s.model()
 
-for i in graph:										#z3 bool instance clause dict
+for i in graph:						#z3 bool instance clause dict
     for j in graph[i]:
         bool_graph[ParseVal((i, j))] = ParseVal(graph[i][j])
         
-for i in bool_graph:				#z3 bool And expr				
+for i in bool_graph:					#z3 bool And expr				
 	sol_list.append(Implies(i,bool_graph[i]))
 
-sol_list.append(Implies(True, filter_bool(true_list))) #True_list expr
+sol_list.append(Implies(True, ParseVal(true_list))) 	#True_list expr
 
 m = makeTT(sol_list)
 truth_dict['True'] = []

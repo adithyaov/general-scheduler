@@ -135,14 +135,14 @@ for (t, p) in graph['xtp'].keys():
 for (k, t, d, p) in graph['iktdp'].keys():
     graph['iktdp'][(k, t, d, p)].append(('xtdp', (t, d, p - 1)))
     for j in range(k):
-        graph['iktdp'][(k, t, d, p)].append(('~xtdp', (t, d, p + j)))
+        graph['iktdp'][(k, t, d, p)].append(('not', ('xtdp', (t, d, p + j))))
     graph['iktdp'][(k, t, d, p)].append(('xtdp', (t, d, p + k)))
     true_list.append(
         ('or', [
-                    ('~xtdp', (t, d, p - 1)),
+                    ('not', ('xtdp', (t, d, p - 1))),
                     ('or', or_list),    # ?
-                    ('~xtdp', (t, d, p + k)),
-                    ('~iktdp', (k, t, d, p))
+                    ('not', ('xtdp', (t, d, p + k))),
+                    ('not', ('iktdp', (k, t, d, p)))
         ]))
 
     graph['iktdp'][(k, t, d, p)].append(('iktd', (k, t, d)))
@@ -178,14 +178,14 @@ for (t, d, p) in graph['itdp'].keys():
 for (k, g, d, p) in graph['ikgdp'].keys():
     graph['ikgdp'][(k, g, d, p)].append(('xgdp', (g, d, p - 1)))
     for j in range(k):
-        graph['ikgdp'][(k, g, d, p)].append(('~xgdp', (g, d, p + j)))
+        graph['ikgdp'][(k, g, d, p)].append(('not', ('xgdp', (g, d, p + j))))
     graph['ikgdp'][(k, g, d, p)].append(('xgdp', (g, d, p + k)))
     true_list.append(
         ('or', [
-                    ('~xgdp', (g, d, p - 1)),
+                    ('not', ('xgdp', (g, d, p - 1))),
                     # ? ('or', or_list),
-                    ('~xgdp', (g, d, p + k)),
-                    ('~ikgdp', (k, g, d, p))
+                    ('not', ('xgdp', (g, d, p + k))),
+                    ('not', ('ikgdp', (k, g, d, p)))
         ]))
 
     graph['ikgdp'][(k, g, d, p)].append(('ikgd', (k, g, d)))
@@ -286,12 +286,7 @@ Check the previous implication.
 
 
 filter_graph()
-
-
-
-print graph
-
-
+true_list = filter_bool(true_list)
 
 
 # t = 0
