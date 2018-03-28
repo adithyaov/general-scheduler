@@ -7,9 +7,6 @@ graph = graph2
 truth_dict = {}
 bool_graph = {}
 
-def DependsOn(pack, deps):			#Adding Implied variables
-    return And([ Implies(pack, dep) for dep in deps ])
-
 def isNeg(v):						#check if ~ is applied
 	if(v[0][0] == '~'):
 		return True
@@ -72,8 +69,6 @@ def makeTT(*args, **keywords):		#Time table SAT solver
 	else:
 		return s.model()
 
-FLA = 0
-
 for i in graph:						#z3 bool instance clause dict
     for j in graph[i]:
         if len(graph[i][j]) > 0:
@@ -81,7 +76,6 @@ for i in graph:						#z3 bool instance clause dict
         else:
             if i == 'x!tsgndp':
                 sol_list.append(Bool(str((i, j))) == False)
-print FLA
 
 for i in bool_graph:				#z3 bool And expr				
 	sol_list.append(Implies(i,And(bool_graph[i])))
