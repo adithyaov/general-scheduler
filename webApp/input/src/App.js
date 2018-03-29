@@ -125,7 +125,7 @@ class App extends Component {
   handleAddClass = () => {
     if(this.state.no_s < 100){
       this.setState({subs : this.state.subs.concat([{
-        id : this.state.sid + 1 ,
+        id : this.state.sid,
         name : '',
         t: 0,
         g: 0,
