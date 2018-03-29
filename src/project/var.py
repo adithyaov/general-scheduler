@@ -25,12 +25,13 @@ num_s = 10
 num_g = 10
 n_max = 4
 p_max = 6
+n_days =
 
 teachers = np.array(range(num_t))
 subjects = np.array(range(num_s))
 groups = np.array(range(num_g))
 
-days = range(6)
+days = range(n_days)
 periods = []
 for _ in days:
     periods.append([0, 1, 2, 3, 4, 5])

@@ -1,3 +1,5 @@
+from collections import defaultdict
+import var
 # 1) Forbidden and requested working hours
 
 if not teacher_forbidden0:
@@ -183,6 +185,7 @@ if not group_atmost_k_idle_period:
 # Favoured periods: 'xtsgnd' => 'x!tsgndp1' or ...
 
 if not favoured_hours:  # dict = {(t,s,g,n):[p]}
+    confort_graph['xtsgnd'] = defaultdict(lambda: [])
     for (t, s, g, n) in favoured_hours.keys():
         for d in days:
             comfort_graph['xtsgnd'][(t, s, g, n, d)] = []
@@ -218,10 +221,6 @@ if not last_first_hours:
 #   except for last working day
 
 if not non_consecutive:
-    for (t, s, g, n) in non_consecutive: # caution comfortgraph['xtsgnd'] is already 
-                                        # initialised once and can cause problems
-                                        #suggestion use a default dict with empty list 
-                                        # incase key does not exist
-                                        
-
-
+    for (t, s, g, n) in non_consecutive:
+        for d in days[:-1]:
+            comfort_graph['xtsgnd'][(t, s, g, n, d)].append(negation(('xtsgnd', (t, s, g, n + 1, d + 1))))
