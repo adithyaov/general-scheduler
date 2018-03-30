@@ -2,7 +2,7 @@ from z3 import *
 from test_diff_loop import *
 
 var_result = {}				#stores result in Bool instance
-sol_list = []
+bool_list = []
 truth_dict = {}
 bool_graph = {}
 
@@ -16,7 +16,7 @@ def ParseVal(v):
 	else:
 		return Bool(str(v))
 	
-def makeTT(*args, **keywords):		#Time table SAT solver
+def compute_bool(*args, **keywords):		#Time table SAT solver
 	s = Solver()
 	s.set(**keywords)
 	s.add(*args)
@@ -30,13 +30,15 @@ def makeTT(*args, **keywords):		#Time table SAT solver
 	else:
 		return (True, s.model())
 
+
+
 for i in graph:						#z3 bool instance clause dict
     for j in graph[i]:
-    	sol_list.append(Implies(ParseVal((i, j)), ParseVal(graph[i][j])))
+    	bool_list.append(Implies(ParseVal((i, j)), ParseVal(graph[i][j])))
 
-sol_list.append(Implies(True, ParseVal(true_list))) 	#True_list expr
+bool_list.append(Implies(True, ParseVal(true_list))) 	#True_list expr
 
-time_table = makeTT(sol_list)
+time_table = compute_bool(bool_list)
 
 if time_table[0] == False:
 	exit(0)
