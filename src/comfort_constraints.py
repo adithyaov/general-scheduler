@@ -110,7 +110,7 @@ if not work_day_duration:
 
 if not duration_upper_limit:
     for (g, d, n) in duration_upper_limit:
-        for k in range(n, max(periods[d]) + 1): # DOUBT ----------
+        for k in range(n + 1, max(periods[d]) + 1): # DOUBT ----------
             comfort_true_list.append(negation(('lkgd', (k, g, d))))
 
 # Atleast n hours on day d for group g
