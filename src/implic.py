@@ -180,7 +180,7 @@ for (k, g, d, p) in graph['ikgdp'].keys():
     graph['ikgdp'][(k, g, d, p)].append(('xgdp', (g, d, p - 1)))
     or_list = []
     for j in range(k):
-        or_list.append(('xgdp', (t, d, p + j)))
+        or_list.append(('xgdp', (g, d, p + j)))
         graph['ikgdp'][(k, g, d, p)].append(negation(('xgdp', (g, d, p + j))))
     graph['ikgdp'][(k, g, d, p)].append(('xgdp', (g, d, p + k)))
     true_list.append(
