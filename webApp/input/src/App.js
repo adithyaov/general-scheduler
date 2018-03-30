@@ -68,8 +68,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h2>Time Machine</h2>
-        <button onClick={() => {console.log(this.state)}}>log state</button>
+        <h2 onClick={() => {console.log(this.state)}}>Time Table Scheduler</h2>
         <div>
           <label>No of working days in a week:</label>
           <input id="dow" type='number' onChange={this.handleChangedow} placeholder={this.state.dow} min="1" max="7"/>
@@ -83,11 +82,11 @@ class App extends Component {
           <label>no of G: </label>
           <input id="no_g" type='number' onChange={this.handleChangeNo_g} placeholder={this.state.no_g} min="1"/>
         </div>
-        <h3>correctness constraints</h3>
+        <h3>Correctness constraints</h3>
         <ul>
         {this.state.subs.map((subs, idx) => (
           <li key={subs.id}>
-          <div className='constraintBar'>
+          <span className='constraintBar'>
             Subject id: {subs.id} &nbsp;
             <input type='text' placeholder={`Subject`} onChange={this.handleChangeClassName(subs.id)} />
             Teacher: { this.createTlist(subs.id) }
@@ -95,7 +94,7 @@ class App extends Component {
             Hours: <input type='number' onChange={this.handleChangeHour(subs.id)} placeholder="1" min="1"/>
             for {this.createNList(subs.id)} time.
             <button onClick={this.handleRemoveClass(subs.id)} > Remove </button>
-          </div>
+          </span>
           </li>
           )
           )}
@@ -115,7 +114,7 @@ class App extends Component {
         </ul>
         </div>
         <div>
-          <button onClick={this.StartWebSocket(this.state)}>Send</button>
+          <button onClick={this.StartWebSocket(this.state)} disabled={this.state.completed}>Send</button>
         </div>
         <div className='ttable'>
           {this.maketables()}
