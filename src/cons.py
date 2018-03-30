@@ -135,24 +135,6 @@ def single(vars):
     return ('and', and_list)
 
 
-def together(groups, t, s, n):
-    '''
-    Condition that is satisfied when all groups specified
-    have the lesson tsn at the same time
-    '''
-
-    and_list = []
-    k = len(groups)
-    for j in range(k):
-        and_list.append(('or', [
-                        ('and', [groups[j],
-                                 groups[j + 1]]),
-                        ('and', [negation(groups[j]),
-                                 negation(groups[j + 1])])
-                        ]))
-    return
-
-
 class Cardinality:
     '''
     Condition that is satisfied when atmost k variables
