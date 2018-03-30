@@ -110,7 +110,7 @@ if not work_day_duration:
 
 if not duration_upper_limit:
     for (g, d, n) in duration_upper_limit:
-        for k in range(n, max(periods[d]) + 1):
+        for k in range(n, max(periods[d]) + 1): # DOUBT ----------
             comfort_true_list.append(negation(('lkgd', (k, g, d))))
 
 # Atleast n hours on day d for group g
@@ -118,7 +118,7 @@ if not duration_upper_limit:
 if not duration_lower_limit:
     for (g, d, n) in duration_lower_limit:
         comfort_graph['xgd'][(g, d)].append(
-            ('lkgd', (n, g, d)))  # Not convinced
+            ('lkgd', (n, g, d)))  # Not convinced, I think you are right
 
 # 5) Idle duration cardinality('xtgdp')
 
@@ -134,7 +134,7 @@ if not teacher_atmost_one_idle_period:
     for t in teacher_atmost_one_idle_period:
         var_list = []
         for d in days:
-            for p in range(min(periods[d]) + 1, max(periods[d] - 1) + 1):
+            for p in range(min(periods[d]) + 1, max(periods[d]) - 1 + 1): # CHANGED
                 var_list.append(('itdp', (t, d, p)))
 
         comfort_true_list.append(single(var_list))
@@ -164,7 +164,7 @@ if not group_atmost_one_idle_period:
     for g in group_atmost_one_idle_period:
         var_list = []
         for d in days:
-            for p in range(min(periods[d]) + 1, max(periods[d] - 1) + 1):
+            for p in range(min(periods[d]) + 1, max(periods[d]) - 1 + 1): # CHANGED
                 var_list.append(('igdp', (g, d, p)))
 
         comfort_true_list.append(single(var_list))
@@ -172,7 +172,7 @@ if not group_atmost_one_idle_period:
 # Atmost k idle periods for a teacher in a week
 
 if not group_atmost_k_idle_period:
-    for (g, k) in atmost_k_idle_period:
+    for (g, k) in group_atmost_k_idle_period:
         var_list = []
         for d in days:
             for p in periods[d]:
@@ -192,7 +192,7 @@ if not favoured_hours:  # dict = {(t,s,g,n):[p]}
             or_list = []
             for p in favoured_hours[(t,s,g,n)]:
                 if bic3(d, p):
-                    or_list.append(('xtsgndp', (t, s, g, n, d, p)))
+                    or_list.append(('x!tsgndp', (t, s, g, n, d, p)))
     
             comfort_graph['xtsgnd'][(t, s, g, n, d)].append(('or', or_list))
 
@@ -204,11 +204,11 @@ if not last_first_hours:
             for p in periods[d]:
                 comfort_graph['x!tsgndp'][(t, s, g, n, d, p)] = []
                 and_list1 = []
-                for p2 in range(min(periods[d]), p + 1):
+                for p2 in range(min(periods[d]), p): # CHANGED
                     and_list1.append(negation(('xgdp', (g, d, p2))))
 
                 and_list2 = []
-                for p2 in range(p + duration(t, s, g, n), max(periods(d) + 1)):
+                for p2 in range(p + duration[(t, s, g, n)], max(periods(d) + 1)):
                     and_list2.append(negation(('xgdp', (g, d, p))))
 
                 or_list = [('and', and_list1), ('and', and_list2)]
@@ -224,3 +224,5 @@ if not non_consecutive:
     for (t, s, g, n) in non_consecutive:
         for d in days[:-1]:
             comfort_graph['xtsgnd'][(t, s, g, n, d)].append(negation(('xtsgnd', (t, s, g, n + 1, d + 1))))
+
+

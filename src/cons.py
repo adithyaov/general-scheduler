@@ -251,7 +251,7 @@ def filter_bool(bool_tuple):
     return (bool_tuple[0], new_list)
 
 
-def filter_graph():
+def filter_graph(graph):
     '''
     Filters all void implication
     '''
