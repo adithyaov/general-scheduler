@@ -1,5 +1,5 @@
 from z3 import *
-from test_diff_loop import *
+from implic import *
 
 var_result = {}				#stores result in Bool instance
 bool_list = []
