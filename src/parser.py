@@ -2,9 +2,8 @@ from z3 import *
 from implic import *
 
 bool_list = []
-var_result = {}
+truth_dict = {}
 all_result = {}
-result_graph = {}
 
 def ParseVal(v):
 	if(v[0] == 'not'):
@@ -16,11 +15,13 @@ def ParseVal(v):
 	else:
 		return Bool(str(v))
 	
-def compute_bool(*args):		#Time table SAT solver
+def compute_bool(*args, **keywords):		#Time table SAT solver
 	s = Solver()
+	s.set(**keywords)
 	s.add(*args)
+	if keywords.get('show', False):
+		print s
 	r = s.check()
-    
 	if r == unsat:
 		return (False, 'No Solution')
 	elif r == unknown:
@@ -28,39 +29,40 @@ def compute_bool(*args):		#Time table SAT solver
 	else:
 		return (True, s.model())
 
+
+
 for i in graph:						#z3 bool instance clause dict
     for j in graph[i]:
     	bool_list.append(Implies(ParseVal((i, j)), ParseVal(graph[i][j])))
 
 bool_list.append(Implies(True, ParseVal(true_list))) 	#True_list expr
 
-itr = 0
-
-while itr < max_sol:
+for itr in range(max_sol):
     time_table = compute_bool(bool_list)
-    if time_table[0] == False:
-        break;
 
-    not_again = []
+    if time_table[0] == False:
+        break
 
     m = time_table[1]
+    not_again = []
+    var_result = {}
+    
     for x in m.decls():
         var_result[x] = bool(m[x])
         not_again.append(Bool(str(x)) != m[x])
 
+    result_graph = {}
+
     for x in var_result:
         y = str(x)[2:-1].split('\', ')
         result_graph[y[0]] = {
-            True: [],
-            False: []
-        }
-
+                True: [],
+                False: []
+                }
+	
     for x in var_result:
-        str(x)[2:-1].split('\', ')
+        y = str(x)[2:-1].split('\', ')
         result_graph[y[0]][var_result[x]].append(tuple(map(int, y[1][1:-1].split(','))))
-
-    print len(result_graph)    
     
-    all_result[itr] = result_graph
     bool_list.append(Or(not_again))
-    itr = itr + 1
+    all_result[itr] = result_graph

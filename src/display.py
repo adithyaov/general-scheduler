@@ -1,4 +1,4 @@
-from tmp import *
+from parser import *
 import numpy as np
 
 for sol in all_result:
