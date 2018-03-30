@@ -67,3 +67,56 @@ def compute_lessons():
     return (lessons_t, lessons_g)
 
 (lessons_t, lessons_g) = compute_lessons()
+
+
+
+comfort_graph = {}
+comfort_graph['xtdp'] = {}
+comfort_graph['xtsgnd'] = {}
+comfort_graph['x!tsgndp'] = {}
+comfort_graph['xtd'] = {}
+comfort_graph['xtp'] = {}
+comfort_graph['xgdp'] = {}
+comfort_graph['xgd'] = {}
+comfort_graph['xgp'] = {}
+comfort_graph['lkgd'] = {}
+
+teacher_forbidden0 = [(t, d, p)]
+teacher_forbidden1 = [(t, d)]
+teacher_forbidden2 = [(t, p)]
+
+teacher_requested0 = [(t, d, p)]
+teacher_requested1 = [(t, d)]
+teacher_requested2 = [(t, p)]
+
+group_forbidden0 = [(g, d, p)]
+group_forbidden1 = [(g, d)]
+group_forbidden2 = [(g, p)]
+
+group_requested0 = [(g, d, p)]
+group_requested1 = [(g, d)]
+group_requested2 = [(g, p)]
+
+teacher_no_overlap = [(t1, t2)]
+
+group_no_overlap = [(g1, g2)]
+
+teaching_days = [(t, n)]        # n <= d
+no_of_days = len(days)
+
+work_day_duration = [(g, k, d)]
+
+duration_upper_limit = [(g, d, n)]
+
+duration_lower_limit = [(g, d, n)]
+
+teacher_max_idle_length = [(t, k)]
+teacher_atmost_one_idle_period = [t]
+teacher_atmost_k_idle_period = [(t, k)]
+
+group_max_idle_length = [(g, k)]
+group_atmost_one_idle_period = [g]
+group_atmost_k_idle_period = [(g, k)]
+
+favoured_hours:  # dict = {(t,s,g,n, d):[p]}
+last_first_hours #[(t,s,g,n)]
