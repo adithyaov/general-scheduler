@@ -100,7 +100,7 @@ group_requested0 = [(g, d, p)]
 # group_requested2 = [(g, p)]
 
 teacher_no_overlap = [(t1, t2)]
-
+teacher_overlap = [(t1, t2)]
 group_no_overlap = [(g1, g2)]
 
 teaching_days = [(t, n)]        # n <= d

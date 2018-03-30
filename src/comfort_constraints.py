@@ -51,7 +51,8 @@ if not group_requested2:
         comfort_true_list.append(('xgp', (g, p)))
 
 
-# 2) Avoiding groups and teachers overlapping
+# 2)
+# a) Avoiding groups and teachers overlapping 
 
 if not teacher_no_overlap:
     for (t1, t2) in teacher_no_overlap:
@@ -70,6 +71,19 @@ if not group_no_overlap:
                     negation(('xgdp', (g2, d, p))))
                 comfort_graph['xgdp'][(g2, d, p)].append(
                     negation(('xgdp', (g1, d, p))))
+
+# b)
+# Compulsory teacher overlap
+
+if not teacher_overlap:
+    for (t1, t2) in teacher_overlap:
+        for d in days:
+            for p in periods[d]:
+                comfort_graph['xtdp'][(t1, d, p)].append(
+                    ('xtdp', (t2, d, p)))
+                comfort_graph['xtdp'][(t2, d, p)].append(
+                    ('xtdp', (t1, d, p)))
+
 
 # 3) Number of teaching days for a teacher
 
