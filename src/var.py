@@ -1,8 +1,8 @@
 import numpy as np
 
 true_list = []
-
 graph = {}
+
 graph['x!tsgndp'] = {}
 graph['xtsgndp'] = {}
 graph['xtsgnd'] = {}
@@ -19,21 +19,24 @@ graph['ikg'] = {}
 graph['itdp'] = {}
 graph['igdp'] = {}
 
-num_t = 10
-num_s = 10
-num_g = 10
-n_max = 4
-p_max = 6
-
-teachers = np.array(range(num_t))
-subjects = np.array(range(num_s))
-groups = np.array(range(num_g))
+num_t = 0
+num_s = 0
+num_g = 0
+p_max = 0
+#n_max = 4
 
 days = range(6)
+
 periods = []
 for _ in days:
-    periods.append([0, 1, 2, 3, 4, 5])
-periods[0] = [0, 1, 2, 3]
+    periods.append([2, 3, 4, 5])
+    
+periods[0] = [0, 1, 3]
+periods[2] = [0, 1, 2]
+periods[5] = [0, 1, 4, 5, 6, 7]
+
+for p in periods:
+    p_max = max([p_max, max(p)+1])
 
 '''
 duration = {
@@ -41,21 +44,65 @@ duration = {
 }
 '''
 duration = {
-    (0, 0, 0, 1): 4,
-    (0, 0, 1, 2): 4,
-    (0, 1, 0, 2): 4,
-    (0, 1, 1, 2): 4,
-    (1, 0, 0, 2): 4,
-    (1, 0, 1, 2): 4,
-    (1, 1, 0, 2): 4,
-    (1, 1, 1, 2): 4
+    (0, 0, 0, 1): 1,
+    (0, 0, 0, 2): 1,
+    (0, 0, 0, 3): 1,
+    (0, 0, 0, 4): 1,
+    (0, 0, 1, 1): 1,
+    (0, 0, 1, 2): 1,
+    (0, 0, 1, 3): 1,
+    (0, 0, 1, 4): 1,
+    (1, 1, 0, 1): 1,
+    (1, 1, 0, 2): 1,
+    (1, 1, 0, 3): 1,
+    (2, 1, 1, 1): 1,
+    (2, 1, 1, 2): 1,
+    (2, 1, 1, 3): 1,
+    (3, 2, 0, 1): 1,
+    (3, 2, 0, 2): 1,
+    (3, 2, 0, 3): 1,
+    (4, 2, 1, 1): 1,
+    (4, 2, 1, 2): 1,
+    (4, 2, 1, 3): 1,
+    (5, 3, 0, 1): 1,
+    (5, 3, 0, 2): 1,
+    (5, 3, 0, 3): 1,
+    (6, 3, 1, 1): 1,
+    (6, 3, 1, 2): 1,
+    (6, 3, 1, 3): 1,
+    (7, 4, 0, 1): 1,
+    (7, 4, 0, 2): 1,
+    (7, 4, 0, 3): 1,
+    (7, 4, 0, 4): 1,
+    (8, 4, 1, 1): 1,
+    (8, 4, 1, 2): 1,
+    (8, 4, 1, 3): 1,
+    (8, 4, 1, 4): 1,
+    (9, 5, 0, 1): 3,
+    (9, 5, 1, 1): 3,
+    (10, 5, 0, 2): 2,
+    (10, 5, 1, 2): 2,
+    (11, 6, 2, 1): 3,
+    (11, 6, 3, 1): 3,
+    (11, 6, 4, 1): 3,
+    (12, 7, 2, 1): 2,
+    (12, 7, 3, 1): 2,
+    (12, 7, 4, 1): 2
 }
+
+for (t, s, g, n) in duration.keys():
+    num_t = max([num_t, t+1])
+    num_s = max([num_s, s+1])
+    num_g = max([num_g, g+1])
+
+teachers = np.array(range(num_t))
+subjects = np.array(range(num_s))
+groups = np.array(range(num_g))   
 
 '''
 lessons of t
 lessons_t[t] = [(t, s, g, n)]
 '''
-
 def compute_lessons():
     lessons_t = [[] for _ in range(num_t)]
     lessons_g = [[] for _ in range(num_g)]
@@ -65,8 +112,6 @@ def compute_lessons():
     return (lessons_t, lessons_g)
 
 (lessons_t, lessons_g) = compute_lessons()
-
-
 
 comfort_graph = {}
 comfort_graph['xtdp'] = {}
@@ -78,7 +123,6 @@ comfort_graph['xgdp'] = {}
 comfort_graph['xgd'] = {}
 comfort_graph['xgp'] = {}
 comfort_graph['lkgd'] = {}
-
 
 '''
 Sketch
