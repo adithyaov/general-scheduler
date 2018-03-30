@@ -38,6 +38,7 @@ for i in graph:						#z3 bool instance clause dict
 bool_list.append(Implies(True, ParseVal(true_list))) 	#True_list expr
 
 for itr in range(max_sol):
+    print "Finding Solution " + str(itr+1)
     time_table = compute_bool(bool_list)
 
     if time_table[0] == False:

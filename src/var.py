@@ -1,6 +1,6 @@
 import numpy as np
 
-max_sol = 25
+max_sol = 3
 true_list = []
 graph = {}
 
