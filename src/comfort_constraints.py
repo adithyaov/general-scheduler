@@ -307,4 +307,4 @@ def nonConsecutive(non_consecutive = []):
             for d in days[:-1]:
                 comfort_graph['xtsgnd'][(t, s, g, n, d)].append(negation(('xtsgnd', (t, s, g, n + 1, d + 1))))
 
-return
+    return
