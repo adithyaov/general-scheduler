@@ -79,6 +79,8 @@ comfort_graph['xgd'] = {}
 comfort_graph['xgp'] = {}
 comfort_graph['lkgd'] = {}
 
+comfort_true_list = []
+
 
 '''
 Sketch
