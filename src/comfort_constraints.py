@@ -170,7 +170,7 @@ def duration(work_day_duration = [],
     
     if not duration_upper_limit:
         for (g, d, n) in duration_upper_limit:
-            for k in range(n, max(periods[d]) + 1):
+            for k in range(n + 1, max(periods[d]) + 1):
                 comfort_true_list.append(negation(('lkgd', (k, g, d))))
     
     # Atleast n hours on day d for group g
@@ -205,7 +205,7 @@ def idleDuration(teacher_max_idle_length = [],
         for t in teacher_atmost_one_idle_period:
             var_list = []
             for d in days:
-                for p in range(min(periods[d]) + 1, max(periods[d] - 1) + 1):
+                for p in range(min(periods[d]) + 1, max(periods[d]) - 1 + 1):
                     var_list.append(('itdp', (t, d, p)))
     
             comfort_true_list.append(single(var_list))
@@ -235,7 +235,7 @@ def idleDuration(teacher_max_idle_length = [],
         for g in group_atmost_one_idle_period:
             var_list = []
             for d in days:
-                for p in range(min(periods[d]) + 1, max(periods[d] - 1) + 1):
+                for p in range(min(periods[d]) + 1, max(periods[d]) - 1 + 1):
                     var_list.append(('igdp', (g, d, p)))
     
             comfort_true_list.append(single(var_list))
@@ -243,7 +243,7 @@ def idleDuration(teacher_max_idle_length = [],
     # Atmost k idle periods for a teacher in a week
     
     if not group_atmost_k_idle_period:
-        for (g, k) in atmost_k_idle_period:
+        for (g, k) in group_atmost_k_idle_period:
             var_list = []
             for d in days:
                 for p in periods[d]:
@@ -270,7 +270,7 @@ def hourSpecification(favoured_hours = {},
                 or_list = []
                 for p in favoured_hours[(t,s,g,n)]:
                     if bic3(d, p):
-                        or_list.append(('xtsgndp', (t, s, g, n, d, p)))
+                        or_list.append(('x!tsgndp', (t, s, g, n, d, p)))
         
                 comfort_graph['xtsgnd'][(t, s, g, n, d)].append(('or', or_list))
     
@@ -282,11 +282,11 @@ def hourSpecification(favoured_hours = {},
                 for p in periods[d]:
                     comfort_graph['x!tsgndp'][(t, s, g, n, d, p)] = []
                     and_list1 = []
-                    for p2 in range(min(periods[d]), p + 1):
+                    for p2 in range(min(periods[d]), p):
                         and_list1.append(negation(('xgdp', (g, d, p2))))
     
                     and_list2 = []
-                    for p2 in range(p + duration(t, s, g, n), max(periods(d) + 1)):
+                    for p2 in range(p + duration[(t, s, g, n)], max(periods(d) + 1)):
                         and_list2.append(negation(('xgdp', (g, d, p))))
     
                     or_list = [('and', and_list1), ('and', and_list2)]
