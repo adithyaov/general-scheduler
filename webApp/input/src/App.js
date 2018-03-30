@@ -293,7 +293,7 @@ class App extends Component {
       case "7": return (<span>Teacher : {this.createTlistComf(cons)} prefers to have classes on atmost {this.createNoDComf(cons)} days</span>);
       case "8": return (<span>Group : {this.createGlistComf(cons)} prefers to have their classes limited to {this.createPlistComf(cons, "np")} periods on {this.createDlistComf(cons, 'd', false)}</span>);
       case "9": return (<span>Teacher : {this.createTlistComf(cons)} prefers to have atmost {this.createPlistComf(cons, "k")} idle periods per day.</span>);
-      case "10": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught during period: {this.createPlistComf(cons)}</span>);
+      case "10": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught during period: {this.createPlistComf(cons, "p", false)}</span>);
       case "11": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught on {this.createDlistComf(cons)}</span>);
       case "12": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught on consecutive days</span>);
     }
@@ -348,9 +348,13 @@ class App extends Component {
     }
     return(<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]}>{options}</select>)
   }
-  createPlistComf(comf, paramName='p')
+  createPlistComf(comf, paramName='p', allperiods = true)
   {
-    var options = [React.createElement('option', {"value" : -1, "key": 0},  "All periods")];
+    var options = [];
+    if(allperiods)
+    {
+      options = [React.createElement('option', {"value" : -1, "key": 0},  "All periods")];
+    }    
     for(var i = 0; i < this.state.no_p; i++){
       options.push(React.createElement('option', {"value" : i, "key": i + 1}, i+1))
     }
