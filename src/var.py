@@ -81,6 +81,10 @@ comfort_graph['xgd'] = {}
 comfort_graph['xgp'] = {}
 comfort_graph['lkgd'] = {}
 
+
+'''
+Sketch
+
 teacher_forbidden0 = [(t, d, p)]
 teacher_forbidden1 = [(t, d)]
 teacher_forbidden2 = [(t, p)]
@@ -118,5 +122,6 @@ group_max_idle_length = [(g, k)]
 group_atmost_one_idle_period = [g]
 group_atmost_k_idle_period = [(g, k)]
 
-favoured_hours:  # dict = {(t,s,g,n, d):[p]}
-last_first_hours #[(t,s,g,n)]
+favoured_hours = {(t,s,g,n, d):[p]}
+last_first_hours = [(t,s,g,n)]
+'''
