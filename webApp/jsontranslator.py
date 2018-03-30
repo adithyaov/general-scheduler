@@ -50,32 +50,57 @@ def conditionInput(incons):
 	comfid['23'] = 'group_atmost_k_idle_period'
 	comfid['24'] = 'favoured_hours'
 	comfid['25'] = 'last_first_hours'
+	comfid['26'] = 'teacher_overlap'
 
 	for x in comfid.keys():
-		constraints_dict[comfid[x]] = []
+		if(x != '24'):
+			constraints_dict[comfid[x]] = []
+	constraints_dict[comfid['24']] = {}
 
 	for x in cons['comfConst']:
 		if(int(x['ctype']) == 1):
-			if(int(x['p']) == 0):
+			if(int(x['p']) == -1):
 				constraints_dict[comfid['1']].append((int(x['t']), int(x['d']) ))
-			elif(int(x['d']) == 0):
+			elif(int(x['d']) == -1):
 				constraints_dict[comfid['2']].append((int(x['t']), int(x['p']) ))
 			else:
 				constraints_dict[comfid['0']].append((int(x['t']), int(x['d']), int(x['p']) ))
 		elif(int(x['ctype']) == 2):
-			if(int(x['p']) == 0):
+			if(int(x['p']) == -1):
 				constraints_dict[comfid['4']].append((int(x['t']), int(x['d']) ))
-			elif(int(x['d']) == 0):
+			elif(int(x['d']) == -1):
 				constraints_dict[comfid['5']].append((int(x['t']), int(x['p']) ))
 			else:
 				constraints_dict[comfid['3']].append((int(x['t']), int(x['d']), int(x['p']) ))
 		elif(int(x['ctype']) == 3):
-			if(int(x['p']) == 0):
+			if(int(x['p']) == -1):
 				constraints_dict[comfid['7']].append((int(x['g']), int(x['d']) ))
-			elif(int(x['d']) == 0):
+			elif(int(x['d']) == -1):
 				constraints_dict[comfid['8']].append((int(x['g']), int(x['p']) ))
 			else:
 				constraints_dict[comfid['6']].append((int(x['g']), int(x['d']), int(x['p']) ))
-
+		elif(int(x['ctype']) == 4):
+			constraints_dict[comfid['13']].append( int(x['g1']), int(x['g2']) )
+		elif(int(x['ctype']) == 5):
+			constraints_dict[comfid['12']].append( int(x['t1']), int(x['t2']) )
+		elif(int(x['ctype']) == 6):
+			constraints_dict[comfid['26']].append( int(x['t1']), int(x['t2']) )
+		elif(int(x['ctype']) == 7):
+			constraints_dict[comfid['14']].append( int(x['t']), int(x['nd']) )
+		elif(int(x['ctype']) == 8):
+			constraints_dict[comfid['16']].append( int(x['g']), int(x['d']), int(x['np']) )
+		elif(int(x['ctype']) == 9):
+			constraints_dict[comfid['18']].append( int(x['t']), int(x['k']) )
+		elif(int(x['ctype']) == 10):
+			t,s,g,n = 0,0,0,0
+			for y in cons['subs']:
+				if(y['id'] == int(x['s'])):
+					t,s,g,n = int(y['t']), int(y['s']), int(y['g']), int(y['n']),
+			if(int(x['mode']) == 1):
+				if (t,s,g,n) in constraints_dict[comfid['24']]:
+					constraints_dict[comfid['24']][(t,s,g,n)].append(int(x['p']))
+				else:
+					constraints_dict[comfid['24']][(t,s,g,n)] = [int(x['p'])]
+		
 	print "conts:-"
 	print constraints_dict
