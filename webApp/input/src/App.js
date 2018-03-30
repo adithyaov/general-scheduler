@@ -16,9 +16,55 @@ class App extends Component {
       no_g : 0,
       dow: 5,
       no_p: 8,
+      maxNoClass: 6,
       comforts: comfortList.comforts,
       comfConst: [],
     }
+  }
+
+  StartWebSocket = (currstate) => (evt) =>
+  {
+     this.ws = new WebSocket("ws://localhost:8888/ws");
+     this.ws.onopen = () =>
+     {
+        this.ws.send("knock");
+        console.log("socket opened");
+     };
+
+     this.ws.onmessage = (evt) =>
+     { 
+        var rec_msg = evt.data;
+        console.log("Message received..." + rec_msg);
+        if(rec_msg === 'yes')
+        {
+          console.log("Connected");
+          this.ws.send(JSON.stringify(this.state))
+        }
+        else
+        {
+          if(rec_msg.startsWith("["))
+          {
+            this.maketables(JSON.parse(rec_msg))
+          }
+        }
+     };
+
+     this.ws.onclose = () =>
+     { 
+        // websocket is closed.
+        alert("Connection is closed..."); 
+     };
+
+     window.onbeforeunload = (event) => {
+        this.ws.close();
+     };
+    
+  }
+
+  maketables = (data) =>
+  {
+    console.log("Making all tables");
+    console.log(data);
   }
 
   render() {
@@ -49,6 +95,7 @@ class App extends Component {
             Teacher: { this.createTlist(subs.id) }
             Group: { this.createGlist(subs.id) }
             Hours: <input type='number' onChange={this.handleChangeHour(subs.id)} placeholder="1" min="1"/>
+            for {this.createNList(subs.id)} time.
             <button onClick={this.handleRemoveClass(subs.id)} > Remove </button>
           </div>
           </li>
@@ -70,7 +117,7 @@ class App extends Component {
         </ul>
         </div>
         <div>
-          <button onClick={this.sendState()}>Send</button>
+          <button onClick={this.StartWebSocket(this.state)}>Send</button>
         </div>
         </div>
     );
@@ -78,11 +125,12 @@ class App extends Component {
   handleAddClass = () => {
     if(this.state.no_s < 100){
       this.setState({subs : this.state.subs.concat([{
-        id : this.state.sid + 1 ,
+        id : this.state.sid,
         name : '',
         t: 0,
         g: 0,
-        n: 1,
+        dur: 1,
+        n: 0,
        }])});
       this.setState({no_s : this.state.no_s + 1,sid : this.state.sid + 1});
     }
@@ -98,15 +146,30 @@ class App extends Component {
   handleChangeHour = (s_id) => (evt) => {
     this.setState({subs : this.state.subs.map((subj) => {
       if(subj.id !== s_id) return subj;
-      subj.n = evt.target.value;
+      subj.dur = evt.target.value;
       return subj;
     })});
   }
-
+  createNList = (sid) => {
+    var options = []
+    for (var i = 0; i < this.state.maxNoClass; i++){
+      var postf = ((i%10 === 1)?('st'):(i%10 === 2)?('nd'):(i%10 === 3)?('rd'):('th'));
+      options.push(React.createElement('option', {"value" : i, "key": i}, (i + postf) ))
+    }
+    return(<select onChange={this.setNConstraint(sid)}>{options}</select>)
+  }
   handleRemoveClass = (idx) => () => {
     this.setState({subs: this.state.subs.filter((subs) => subs.id !== idx)});
     this.setState({no_s : this.state.no_s - 1});
     // console.log("Rem" + idx)
+  }
+  setNConstraint = (sid) => (evt) => {
+    this.setState({subs : this.state.subs.map((subj) => {
+      if(subj.id !== sid) return subj;
+      subj.n = evt.target.value;
+      return subj;
+    })});
+    console.log(" n constraint set for " + evt.target.value + " on " + sid);
   }
   handleChangeNo_t = (evt) => {
     this.setState({no_t :evt.target.value});
@@ -313,7 +376,7 @@ class App extends Component {
     })
     return (<select id="comfList" key={this.state.cid}>{listElem}</select>)
   }
-  sendState()
+  sendState = () => (evt) =>
   {
     var req = new XMLHttpRequest();
     req.open('POST', '/input', false);
@@ -323,3 +386,4 @@ class App extends Component {
 }
 
 export default App;
+
