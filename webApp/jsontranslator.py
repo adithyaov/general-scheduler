@@ -1,4 +1,5 @@
 import json
+from pprint import pprint
 
 def conditionInput(incons):
 	constraints_dict = {}
@@ -9,10 +10,10 @@ def conditionInput(incons):
 	
 	constraints_dict['duration'] = duration
 
-	constraints_dict['num_t'] = cons['no_t']
+	constraints_dict['num_t'] = int(cons['no_t'])
 
 	constraints_dict['num_s'] = cons['no_s']
-	constraints_dict['num_g'] = cons['no_g']
+	constraints_dict['num_g'] = int(cons['no_g'])
 	constraints_dict['n_max'] = cons['maxNoClass']
 	constraints_dict['p_max'] = cons['no_p']
 	constraints_dict['d_max'] = cons['dow']
@@ -80,17 +81,17 @@ def conditionInput(incons):
 			else:
 				constraints_dict[comfid['6']].append((int(x['g']), int(x['d']), int(x['p']) ))
 		elif(int(x['ctype']) == 4):
-			constraints_dict[comfid['13']].append( int(x['g1']), int(x['g2']) )
+			constraints_dict[comfid['13']].append( (int(x['g1']), int(x['g2'])) )
 		elif(int(x['ctype']) == 5):
-			constraints_dict[comfid['12']].append( int(x['t1']), int(x['t2']) )
+			constraints_dict[comfid['12']].append( (int(x['t1']), int(x['t2'])) )
 		elif(int(x['ctype']) == 6):
-			constraints_dict[comfid['26']].append( int(x['t1']), int(x['t2']) )
+			constraints_dict[comfid['26']].append( (int(x['t1']), int(x['t2'])) )
 		elif(int(x['ctype']) == 7):
-			constraints_dict[comfid['14']].append( int(x['t']), int(x['nd']) )
+			constraints_dict[comfid['14']].append( (int(x['t']), int(x['nd'])) )
 		elif(int(x['ctype']) == 8):
-			constraints_dict[comfid['16']].append( int(x['g']), int(x['d']), int(x['np']) )
+			constraints_dict[comfid['16']].append( (int(x['g']), int(x['d']), int(x['np'])) )
 		elif(int(x['ctype']) == 9):
-			constraints_dict[comfid['18']].append( int(x['t']), int(x['k']) )
+			constraints_dict[comfid['18']].append( (int(x['t']), int(x['k'])) )
 		elif(int(x['ctype']) == 10):
 			t,s,g,n = 0,0,0,0
 			for y in cons['subs']:
@@ -101,6 +102,6 @@ def conditionInput(incons):
 					constraints_dict[comfid['24']][(t,s,g,n)].append(int(x['p']))
 				else:
 					constraints_dict[comfid['24']][(t,s,g,n)] = [int(x['p'])]
-		
+
 	print "conts:-"
-	print constraints_dict
+	pprint(constraints_dict)

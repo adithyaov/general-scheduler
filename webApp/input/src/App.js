@@ -19,6 +19,7 @@ class App extends Component {
       maxNoClass: 6,
       comforts: comfortList.comforts,
       comfConst: [],
+      completed: 0,
     }
   }
 
@@ -44,7 +45,9 @@ class App extends Component {
         {
           if(rec_msg.startsWith("["))
           {
-            this.maketables(JSON.parse(rec_msg))
+            this.setState({"result" : JSON.parse(rec_msg)});
+            this.setState({"completed": 1})
+            // this.maketables(JSON.parse(rec_msg))
           }
         }
      };
@@ -52,7 +55,7 @@ class App extends Component {
      this.ws.onclose = () =>
      { 
         // websocket is closed.
-        alert("Connection is closed..."); 
+        console.log("Connection is closed..."); 
      };
 
      window.onbeforeunload = (event) => {
@@ -61,11 +64,6 @@ class App extends Component {
     
   }
 
-  maketables = (data) =>
-  {
-    console.log("Making all tables");
-    console.log(data);
-  }
 
   render() {
     return (
@@ -119,8 +117,62 @@ class App extends Component {
         <div>
           <button onClick={this.StartWebSocket(this.state)}>Send</button>
         </div>
+        <div className='ttable'>
+          {this.maketables()}
+        </div>
         </div>
     );
+  }
+  maketables = () =>
+  {
+
+    if(this.state.completed === 0)
+    {
+      return(<span></span>)
+    }
+    else
+    {
+      var k = 0
+      var heads = [React.createElement("th", {key: k++}, "X")]
+      var nocol = 0;
+      var rows = []
+      this.state.result.forEach((rowlist) => {
+        var rowitems = []
+        rowlist.forEach((rowitem) => {
+          var cellitems = []
+          if(typeof(rowitem) != "string")
+            rowitem.forEach((cellitem) => {
+              cellitems.push(React.createElement('span', {key: k++}, "(" + cellitem + ") "))
+            })
+          else
+            cellitems.push(React.createElement('span', {key: k++}, rowitem))
+          // console.log(rowitem.length)
+          rowitems.push(React.createElement('td', { key : k++}, cellitems))
+        })
+        if(rowitems.length > nocol)
+          nocol = rowitems.length
+        rows.push(React.createElement('tr', { key : k++}, rowitems));
+      })
+      for(var i = 0; i < nocol - 1; i++)
+      {
+        heads.push(React.createElement("th", {key : k++}, "Period " + i))
+      }
+      console.log("Making all tables");
+      console.log(this.state.result);
+      console.log(nocol);
+
+
+
+      var ttable = React.createElement('table', {border : 1}, 
+        React.createElement('tbody', {key: k++},  [
+          React.createElement('tr', {key: k++}, heads),
+          rows
+          ]
+        )
+      )
+      return(ttable)
+    }
+
   }
   handleAddClass = () => {
     if(this.state.no_s < 100){
@@ -293,7 +345,7 @@ class App extends Component {
       case "7": return (<span>Teacher : {this.createTlistComf(cons)} prefers to have classes on atmost {this.createNoDComf(cons)} days</span>);
       case "8": return (<span>Group : {this.createGlistComf(cons)} prefers to have their classes limited to {this.createPlistComf(cons, "np")} periods on {this.createDlistComf(cons, 'd', false)}</span>);
       case "9": return (<span>Teacher : {this.createTlistComf(cons)} prefers to have atmost {this.createPlistComf(cons, "k")} idle periods per day.</span>);
-      case "10": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught during period: {this.createPlistComf(cons, "p", false)}</span>);
+      case "10": return (<span>Subject : {this.createSubListComf(cons)} is preferred to be taught during period: {this.createPlistComf(cons, "p", false)}</span>);
       case "11": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught on {this.createDlistComf(cons)}</span>);
       case "12": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught on consecutive days</span>);
     }
@@ -344,7 +396,7 @@ class App extends Component {
     }
     var days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     for(var i = 0; i < this.state.dow; i++){
-      options.push(React.createElement('option', {"value" : i, "key": i + 1}, ((i+1).toString()) + " (" + days[i] + ")"));
+      options.push(React.createElement('option', {"value" : i, "key": i + 1}, ((i).toString()) + " (" + days[i] + ")"));
     }
     return(<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]}>{options}</select>)
   }
@@ -356,7 +408,7 @@ class App extends Component {
       options = [React.createElement('option', {"value" : -1, "key": 0},  "All periods")];
     }    
     for(var i = 0; i < this.state.no_p; i++){
-      options.push(React.createElement('option', {"value" : i, "key": i + 1}, i+1))
+      options.push(React.createElement('option', {"value" : i, "key": i + 1}, i))
     }
     return(<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]}>{options}</select>)
   }
