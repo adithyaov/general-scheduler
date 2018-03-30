@@ -35,8 +35,6 @@ for _ in days:
     periods.append([0, 1, 2, 3, 4, 5])
 periods[0] = [0, 1, 2, 3]
 
-_duration = np.ones([num_t, num_s, num_g, n_max])
-
 '''
 duration = {
     (t, s, g, n): 3
@@ -94,12 +92,12 @@ teacher_requested1 = [(t, d)]
 teacher_requested2 = [(t, p)]
 
 group_forbidden0 = [(g, d, p)]
-group_forbidden1 = [(g, d)]
-group_forbidden2 = [(g, p)]
+# group_forbidden1 = [(g, d)]
+# group_forbidden2 = [(g, p)]
 
 group_requested0 = [(g, d, p)]
-group_requested1 = [(g, d)]
-group_requested2 = [(g, p)]
+# group_requested1 = [(g, d)]
+# group_requested2 = [(g, p)]
 
 teacher_no_overlap = [(t1, t2)]
 
