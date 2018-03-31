@@ -3,7 +3,15 @@ import ReactDOM from 'react-dom';
 import './App.css';
 import comfortList from './comfortList.json'
 // import {Button} from 'react-mdl'
-import {RaisedButton, TextField, SelectField, MenuItem} from 'material-ui';
+import {RaisedButton, TextField, FlatButton, AppBar, SvgIcon, Drawer, MenuItem, Dialog} from 'material-ui';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
 
 class Appcon extends Component {
   constructor(props){
@@ -14,14 +22,15 @@ class Appcon extends Component {
       no_c : 0,
       cid : 0,
       subs: [],
-      no_t : 1,
-      no_g : 1,
+      no_t : 4,
+      no_g : 4,
       dow: 5,
       no_p: 8,
       maxNoClass: 6,
       comforts: comfortList.comforts,
       comfConst: [],
       completed: 0,
+      helpopen : false,
     }
   }
   getInitialProps ({ pathname, query }) {
@@ -74,7 +83,11 @@ class Appcon extends Component {
   render() {
     return (
       <div className="App">
-        <h2 onClick={() => {console.log(this.state)}}>Time Table Scheduler</h2>
+      <Drawer open={false}>
+          <MenuItem>Please list all lessons and comfort constraints. Press Send to start solving.</MenuItem>
+          <MenuItem><FlatButton label="log current state" onClick={() => {console.log(this.state)}}/></MenuItem>
+        </Drawer>
+      <AppBar onClick={() => {console.log(this.state)}} title="Time Table Scheduler" />
         <div>
           <label>No of working days in a week:</label>
           <TextField id="dow" type='number' onChange={this.handleChangedow} defaultValue={this.state.dow} min="1" max="7"/>
@@ -97,9 +110,9 @@ class Appcon extends Component {
             <TextField id={`name` + subs.id} type='text' floatingLabelText={`Subject`} onChange={this.handleChangeClassName(subs.id)} />
             <label>Teacher:</label> { this.createTlist(subs.id) }
             <label>Group:</label> { this.createGlist(subs.id) }
-            <label>Hours:</label> <TextField id={`n` + subs.id} type='number' onChange={this.handleChangeHour(subs.id)} defaultValue="1" min="1"/>
+            <label>Hours:</label> <TextField id={`n` + subs.id} type='number' onChange={this.handleChangeHour(subs.id)} defaultValue={subs.dur} min="1"/>
             for {this.createNList(subs.id)} time.
-            <button onClick={this.handleRemoveClass(subs.id)} > Remove </button>
+            <FlatButton onClick={this.handleRemoveClass(subs.id)} secondary={true} label='Remove' />
           </span>
           </li>
           )
@@ -108,19 +121,19 @@ class Appcon extends Component {
         <RaisedButton onClick={this.handleAddClass} primary={true} label="Add a class" />
         <h3>Comfort constraints</h3>
         Add a comfort constraint: {this.listComfort()}
-        <button onClick={this.handleAddComfort()}>Add</button>
+        <FlatButton onClick={this.handleAddComfort()} primary={true} label="Add"/>
         <div>
         <ul>
           {this.state.comfConst.map((cons, idx) => (
             <li key={idx}>
               {this.makeConstBody(cons)}
-              <button onClick={this.handleRemoveComf(cons.id)} > Remove </button>
+              <FlatButton onClick={this.handleRemoveComf(cons.id)} secondary={true} label="Remove" />
             </li>
           ))}
         </ul>
         </div>
         <div>
-          <button onClick={this.StartWebSocket(this.state)} >Send</button>
+          <RaisedButton onClick={this.StartWebSocket(this.state)} primary={true} label="Send"/>
         </div>
         <div className='ttable'>
           {this.maketables()}
@@ -310,23 +323,23 @@ class Appcon extends Component {
   }
 
 
-  setTeacherConstraint = (sid, val) =>
+  setTeacherConstraint = (sid) => (evt) =>
   {
     this.setState({subs : this.state.subs.map((subj) => {
       if(subj.id !== sid) return subj;
-      subj.t = val;
+      subj.t = evt.target.value;
       return subj;
     })});
-    console.log(" teacher constraint set as " + val + " on " + sid);
+    console.log(" teacher constraint set for " + evt.target.value + " on " + sid);
   }
-  setGroupConstraint = (sid, val) =>
+  setGroupConstraint = (sid) => (evt) =>
   {
     this.setState({subs : this.state.subs.map((subj) => {
       if(subj.id !== sid) return subj;
-      subj.g = val;
+      subj.g = evt.target.value;
       return subj;
     })});
-    console.log("group constraint set as " + val + " on " + sid);
+    console.log("group constraint set for " + evt.target.value + " on " + sid);
   }
   setComfortParam = (cid, param) => (evt) =>
   {
@@ -354,12 +367,6 @@ class Appcon extends Component {
       case "11": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught on {this.createDlistComf(cons)}</span>);
       case "12": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught on consecutive days</span>);
     }
-  }
-  getSubsById(sid, param)
-  {
-    this.state.subs.map((subj) => {
-      if(subj.id === sid) return subj[param];
-    });
   }
   askPreferComf(comf, paramName="mode")
   {
@@ -427,21 +434,18 @@ class Appcon extends Component {
   {
     var options = []
     for(var i = 0; i < this.state.no_t; i++){
-      // options.push(React.createElement('MenuItem', {"value" : i , "key": i, primaryText: i} ))
-      options.push(<MenuItem value={`${i}`} key={i} primaryText={`${i}`} />)
+      options.push(React.createElement('option', {"value" : i , "key": i}, i))
     }
     
-    return(<SelectField value={(this.getSubsById(sid, 't'))} floatingLabelText="Select teacher" onChange={(e,_,val) =>this.setTeacherConstraint(sid, val)} >{options}</SelectField>)
+    return(<select onChange={this.setTeacherConstraint(sid)} >{options}</select>)
   }
   createGlist(sid)
   {
     var options = []
     for(var i = 0; i < this.state.no_g; i++){
-      options.push(<MenuItem value={`${i}`} key={i} primaryText={`${i}`} />)
-      // options.push(React.createElement('option', {"value" : i, "key": i}, i))
+      options.push(React.createElement('option', {"value" : i, "key": i}, i))
     }
-    return(<SelectField value={(this.getSubsById(sid, 'g'))} floatingLabelText="Select group" onChange={(e,_,val) =>this.setGroupConstraint(sid, val)} >{options}</SelectField>)
-    // return(<select onChange={this.setGroupConstraint(sid)}>{options}</select>)
+    return(<select onChange={this.setGroupConstraint(sid)}>{options}</select>)
   }
   listComfort()
   {
