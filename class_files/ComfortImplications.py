@@ -1,5 +1,6 @@
 from collections import defaultdict
 from StaticVariables import *
+from utils import *
 
 class ComfortImplications():
     """docstring for ComfortImplications"""
@@ -17,9 +18,9 @@ class ComfortImplications():
         self.comfort_graph['lkgd'] = {}
         self.comfort_true_list = []
 
-        StaticVariables.days = days
-        StaticVariables.periods = StaticVariables.periods
-        StaticVariables.duration = duration
+        # StaticVariables.days = []
+        # StaticVariables.periods = StaticVariables.periods
+        # StaticVariables.duration = duratio
 
     def reset(self):
         self.comfort_graph = {}
@@ -159,8 +160,8 @@ class ComfortImplications():
 
     def teaching_days(self, teaching_days = []):
 
-        if not teaching_self.days:
-            for (t, n) in teaching_self.days:
+        if not teaching_days:
+            for (t, n) in teaching_days:
                 atmost_var_list = []
                 atleast_var_list = []
                 for d in StaticVariables.days:
@@ -290,7 +291,7 @@ class ComfortImplications():
                            last_first_hours = []):
 
         if not favoured_hours:  # dict = {(t,s,g,n):[p]}
-            confort_graph['xtsgnd'] = defaultdict(lambda: [])
+            self.comfort_graph['xtsgnd'] = defaultdict(lambda: [])
             for (t, s, g, n) in favoured_hours.keys():
                 for d in StaticVariables.days:
                     self.comfort_graph['xtsgnd'][(t, s, g, n, d)] = []

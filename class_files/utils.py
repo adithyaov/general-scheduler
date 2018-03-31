@@ -120,8 +120,10 @@ def filter_bool(bool_tuple):
 
     bool_list = bool_tuple[1]
     if len(bool_list) == 0:
-        return None
-
+        if (bool_tuple[0] == StaticVariables.and_head):
+            return (StaticVariables.or_head,([negation(('t',(1))), ('t', (1))]))
+        else:
+            return (StaticVariables.and_head,([negation(('t',(1))), ('t', (1))]))
     if len(bool_list) == 1:
         return bool_list[0]
 
@@ -134,6 +136,7 @@ def filter_bool(bool_tuple):
 
     return (bool_tuple[0], new_list)
 
+# print filter_bool(('and', [('or', []), ('or', [])]))
 
 def filter_graph(graph):
     '''
@@ -142,10 +145,11 @@ def filter_graph(graph):
     for var_type in graph.keys():
         for var_tup in graph[var_type].keys():
             new_bool_list = filter_bool(graph[var_type][var_tup])
-            if new_bool_list == None:
-                graph[var_type].pop(var_tup)
-            else:
-                graph[var_type][var_tup] = new_bool_list
+            # if new_bool_list == None:
+            #     graph[var_type].pop(var_tup)
+            # else:
+            #     graph[var_type][var_tup] = new_bool_list
+            graph[var_type][var_tup] = new_bool_list
 
 
 def parse_val(v):
