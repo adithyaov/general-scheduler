@@ -52,6 +52,7 @@ def conditionInput(incons):
 	comfid['24'] = 'favoured_hours'
 	comfid['25'] = 'last_first_hours'
 	comfid['26'] = 'teacher_overlap'
+	comfid['27'] = 'non_consecutive'
 
 	for x in comfid.keys():
 		if(x != '24'):

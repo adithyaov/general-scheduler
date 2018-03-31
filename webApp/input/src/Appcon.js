@@ -141,57 +141,57 @@ class Appcon extends Component {
         </div>
     );
   }
-  makenewtables = () =>
-  {
+  // makenewtables = () =>
+  // {
 
-    if(this.state.completed === 0)
-    {
-      return(<span></span>)
-    }
-    else
-    {
-      var k = 0
-      var heads = [React.createElement("TableHeaderColumn", {key: k++}, "X")]
-      var nocol = 0;
-      var rows = []
-      this.state.result.forEach((rowlist) => {
-        var rowitems = []
-        rowlist.forEach((rowitem) => {
-          var cellitems = []
-          if(typeof(rowitem) != "string")
-            rowitem.forEach((cellitem) => {
-              cellitems.push(React.createElement('span', {key: k++}, "(" + cellitem + ") "))
-            })
-          else
-            cellitems.push(React.createElement('span', {key: k++}, rowitem))
-          // console.log(rowitem.length)
-          rowitems.push(React.createElement('TableRowColumn', { key : k++}, cellitems))
-        })
-        if(rowitems.length > nocol)
-          nocol = rowitems.length
-        rows.push(React.createElement('TableRow', { key : k++}, rowitems));
-      })
-      for(var i = 0; i < nocol - 1; i++)
-      {
-        heads.push(React.createElement("TableHeaderColumn", {key : k++}, "Period " + i))
-      }
-      console.log("Making all tables");
-      console.log(this.state.result);
-      console.log(nocol);
+  //   if(this.state.completed === 0)
+  //   {
+  //     return(<span></span>)
+  //   }
+  //   else
+  //   {
+  //     var k = 0
+  //     var heads = [React.createElement("TableHeaderColumn", {key: k++}, "X")]
+  //     var nocol = 0;
+  //     var rows = []
+  //     this.state.result.forEach((rowlist) => {
+  //       var rowitems = []
+  //       rowlist.forEach((rowitem) => {
+  //         var cellitems = []
+  //         if(typeof(rowitem) != "string")
+  //           rowitem.forEach((cellitem) => {
+  //             cellitems.push(React.createElement('span', {key: k++}, "(" + cellitem + ") "))
+  //           })
+  //         else
+  //           cellitems.push(React.createElement('span', {key: k++}, rowitem))
+  //         // console.log(rowitem.length)
+  //         rowitems.push(React.createElement('TableRowColumn', { key : k++}, cellitems))
+  //       })
+  //       if(rowitems.length > nocol)
+  //         nocol = rowitems.length
+  //       rows.push(React.createElement('TableRow', { key : k++}, rowitems));
+  //     })
+  //     for(var i = 0; i < nocol - 1; i++)
+  //     {
+  //       heads.push(React.createElement("TableHeaderColumn", {key : k++}, "Period " + i))
+  //     }
+  //     console.log("Making all tables");
+  //     console.log(this.state.result);
+  //     console.log(nocol);
 
 
 
-      var ttable = React.createElement('table', {border : 1, style : { display : "inline-block", margin : "5px"}}, 
-        React.createElement('TableBody', {key: k++},  [
-          React.createElement('TableRowColumn', {key: k++}, heads),
-          rows
-          ]
-        )
-      )
-      return(ttable)
-    }
+  //     var ttable = React.createElement('table', {border : 1, style : { display : "inline-block", margin : "5px"}}, 
+  //       React.createElement('TableBody', {key: k++},  [
+  //         React.createElement('TableRowColumn', {key: k++}, heads),
+  //         rows
+  //         ]
+  //       )
+  //     )
+  //     return(ttable)
+  //   }
     
-  }
+  // }
   maketables = () =>
   {
 
@@ -213,7 +213,8 @@ class Appcon extends Component {
             rowitem.forEach((cellitem) => {
               var thissub = this.state.subs.filter((subs) => subs.id == cellitem[1]);
               // console.log(thissub);
-              cellitems.push(React.createElement('span', {key: k++}, "(" + thissub[0].name + ") "))
+              // cellitems.push(React.createElement('span', {key: k++}, "(" + thissub[0].name + ") "))
+              cellitems.push(React.createElement('span', {key: k++}, "(" + cellitem + ") "))
             })
           else
             cellitems.push(React.createElement('span', {key: k++}, rowitem))
