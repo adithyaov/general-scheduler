@@ -113,12 +113,11 @@ x = StandardImplications()
 x.init_vars()
 x.basic_implications()
 x.correctness_implications()
-filter_graph(x.graph)
-x.true_list = filter_bool(x.true_list)
-z = Parser(x.graph, x.true_list)
-ga = z.compute_result(1)
-print 'x!tsgndp: ', len(ga[0]['x!tsgndp'][True]), len(StaticVariables.duration)
-print 'xtsgndp: ', len(ga[0]['xtsgndp'][True]), np.sum([x for x in StaticVariables.duration.values()])
+x.format_result()
+z = Parser([x.graph], [x.true_list])
+z.compute_result(1)
+print 'x!tsgndp: ', len(z.result_graphs[0]['x!tsgndp'][True]), len(StaticVariables.duration)
+print 'xtsgndp: ', len(z.result_graphs[0]['xtsgndp'][True]), np.sum([x for x in StaticVariables.duration.values()])
 
 from tabulate import tabulate
 
@@ -131,8 +130,8 @@ bdf = [x for x in courses.keys()]
 for x in range(len(courses)):
     courses[bdf[x]] = 'ID ' + str(x)
 
-for sol in ga:
-    result_graph = ga[sol]
+for sol in z.result_graphs:
+    result_graph = z.result_graphs[sol]
     scheduled = result_graph['xtsgndp'][True]
     
     ttable = [[ [] for i in range(StaticVariables.p_max) ] for i in range(len(StaticVariables.days))]
@@ -146,7 +145,7 @@ for sol in ga:
     
     print tabulate(ttable, headers=["X"]+range(StaticVariables.p_max), tablefmt='fancy_grid').encode('utf-8')
 
-g = [x for x in ga]
+g = [x for x in z.result_graphs]
 A = [[] for x in range(len(g))]
 
 for i in range(len(g)):

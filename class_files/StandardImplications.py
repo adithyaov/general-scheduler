@@ -306,7 +306,10 @@ class StandardImplications():
                     self.graph['xtsgndp'][multi_dict[(t, d, p)][(s, n)][i][1]] += append_list
             self.true_list.append(single(single_list))
 
-
         '''
         Check the previous implication.
         '''
+
+    def format_result(self):
+        filter_graph(self.graph)
+        self.true_list = filter_bool(self.true_list)

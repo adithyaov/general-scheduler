@@ -148,13 +148,13 @@ def filter_graph(graph):
                 graph[var_type][var_tup] = new_bool_list
 
 
-def ParseVal(v):
+def parse_val(v):
     if(v[0] == 'not'):
         return Not(Bool(str(v[1])))
     elif(v[0] == 'or'):
-        return Or([ ParseVal(b) for b in v[1] ])                     
+        return Or([ parse_val(b) for b in v[1] ])                     
     elif(v[0] == 'and'):
-        return And([ ParseVal(b) for b in v[1] ])
+        return And([ parse_val(b) for b in v[1] ])
     else:
         return Bool(str(v))
     

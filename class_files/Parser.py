@@ -5,18 +5,22 @@ from z3 import *
 class Parser():
     """docstring for Parser"""
 
-    def __init__(self, graph, true_list):
-        self.graph = graph
-        self.true_list = true_list
+    def __init__(self, graphs, true_lists):
+        self.graphs = graphs
+        self.true_lists = true_lists
+        self.result_graphs = {}
     
     def compute_result(self, num_results=3):
-        result_graphs = {}
         bool_list = []
-        for i in self.graph:
-            for j in self.graph[i]:
-                bool_list.append(Implies(ParseVal((i, j)), ParseVal(self.graph[i][j])))
+        for graph in self.graphs:
+            for i in graph:
+                for j in graph[i]:
+                    bool_list.append(Implies(parse_val((i, j)), parse_val(graph[i][j])))
 
-        bool_list.append(Implies(True, ParseVal(self.true_list)))
+        for true_list in self.true_lists:
+            formatted_true_list = parse_val(true_list)
+            if formatted_true_list != None:
+                bool_list.append(Implies(True, formatted_true_list))
 
         for i in range(num_results):
             bool_result = compute_bool(bool_list)
@@ -44,8 +48,5 @@ class Parser():
                 result_graph[y[0]][bool(truth_assignments[x])].append(tuple(map(int, y[1][1:-1].split(','))))
             
             bool_list.append(Or(not_again))
-            result_graphs[i] = result_graph
-
-        return result_graphs
-
+            self.result_graphs[i] = result_graph
 

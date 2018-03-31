@@ -21,7 +21,7 @@ class ComfortImplications():
         StaticVariables.periods = StaticVariables.periods
         StaticVariables.duration = duration
 
-    def reset():
+    def reset(self):
         self.comfort_graph = {}
         self.comfort_graph['xtdp'] = {}
         self.comfort_graph['xtsgnd'] = {}
@@ -34,6 +34,9 @@ class ComfortImplications():
         self.comfort_graph['lkgd'] = {}
         self.comfort_true_list = []
 
+    def format_result(self):
+        filter_graph(self.comfort_graph)
+        self.comfort_true_list = filter_bool(self.comfort_true_list)
 
     # 1) Forbidden and requested working hours
     def teacher_forbidden(self,
