@@ -36,9 +36,9 @@ for k in range(1, p_max + 1): #should it not be from 1 to pmax rather than from 
         for d in days:
             if bic9(k, d):
                 graph['iktd'][(k, t, d)] = []
-            for p in periods[d]:
-                if bic8(k, d, p):
-                    graph['iktdp'][(k, t, d, p)] = []
+                for p in periods[d]:
+                    if bic8(k, d, p):
+                        graph['iktdp'][(k, t, d, p)] = []
 
 for k in range(1, p_max + 1):
     for g in groups:
@@ -46,9 +46,9 @@ for k in range(1, p_max + 1):
         for d in days:
             if bic9(k, d):
                 graph['ikgd'][(k, g, d)] = []
-            for p in periods[d]:
-                if bic8(k, d, p):
-                    graph['ikgdp'][(k, g, d, p)] = []
+                for p in periods[d]:
+                    if bic8(k, d, p):
+                        graph['ikgdp'][(k, g, d, p)] = []
 
 
 for t in teachers:
@@ -74,12 +74,11 @@ for (t, s, g, n, d, p1) in graph['x!tsgndp'].keys():
             )
 
 for (t, s, g, n, d, p2) in graph['xtsgndp'].keys():
-    if bic3(d, p2):   #required ?...
-        or_list = []
-        for p1 in periods[d]:
-            if bic2(t, s, g, n, d, p1, p2):
-                or_list.append(('x!tsgndp', (t, s, g, n, d, p1)))
-        graph['xtsgndp'][(t, s, g, n, d, p2)].append(('or', or_list))
+    or_list = []
+    for p1 in periods[d]:
+        if bic2(t, s, g, n, d, p1, p2):
+            or_list.append(('x!tsgndp', (t, s, g, n, d, p1)))
+    graph['xtsgndp'][(t, s, g, n, d, p2)].append(('or', or_list))
 
 
 for (t, s, g, n, d, p) in graph['xtsgndp'].keys():
@@ -127,22 +126,24 @@ for (t, d) in graph['xtd'].keys():
 for (t, p) in graph['xtp'].keys():
     or_list = []
     for d in days:
-        if bic3(d, p):#if p in periods[d]:
+        if bic3(d, p):
          	or_list.append(('xtdp', (t, d, p)))
     graph['xtp'][(t, p)].append(('or', or_list))
 
 
 for (k, t, d, p) in graph['iktdp'].keys():
     graph['iktdp'][(k, t, d, p)].append(('xtdp', (t, d, p - 1)))
+    or_list = []
     for j in range(k):
-        graph['iktdp'][(k, t, d, p)].append(('not', ('xtdp', (t, d, p + j))))
+        or_list.append(('xtdp', (t, d, p + j)))
+        graph['iktdp'][(k, t, d, p)].append(negation(('xtdp', (t, d, p + j))))
     graph['iktdp'][(k, t, d, p)].append(('xtdp', (t, d, p + k)))
     true_list.append(
         ('or', [
-                    ('not', ('xtdp', (t, d, p - 1))),
-                    ('or', or_list),    # ?
-                    ('not', ('xtdp', (t, d, p + k))),
-                    ('not', ('iktdp', (k, t, d, p)))
+                    negation(('xtdp', (t, d, p - 1))),
+                    ('or', or_list),
+                    negation(('xtdp', (t, d, p + k))),
+                    negation(('iktdp', (k, t, d, p)))
         ]))
 
     graph['iktdp'][(k, t, d, p)].append(('iktd', (k, t, d)))
@@ -177,15 +178,17 @@ for (t, d, p) in graph['itdp'].keys():
 
 for (k, g, d, p) in graph['ikgdp'].keys():
     graph['ikgdp'][(k, g, d, p)].append(('xgdp', (g, d, p - 1)))
+    or_list = []
     for j in range(k):
-        graph['ikgdp'][(k, g, d, p)].append(('not', ('xgdp', (g, d, p + j))))
+        or_list.append(('xgdp', (g, d, p + j)))
+        graph['ikgdp'][(k, g, d, p)].append(negation(('xgdp', (g, d, p + j))))
     graph['ikgdp'][(k, g, d, p)].append(('xgdp', (g, d, p + k)))
     true_list.append(
         ('or', [
-                    ('not', ('xgdp', (g, d, p - 1))),
-                    # ? ('or', or_list),
-                    ('not', ('xgdp', (g, d, p + k))),
-                    ('not', ('ikgdp', (k, g, d, p)))
+                    negation(('xgdp', (g, d, p - 1))),
+                    ('or', or_list),
+                    negation(('xgdp', (g, d, p + k))),
+                    negation(('ikgdp', (k, g, d, p)))
         ]))
 
     graph['ikgdp'][(k, g, d, p)].append(('ikgd', (k, g, d)))
@@ -285,7 +288,7 @@ Check the previous implication.
 '''
 
 
-filter_graph()
+filter_graph(graph)
 true_list = filter_bool(true_list)
 
 
