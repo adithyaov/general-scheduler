@@ -20,8 +20,10 @@ def simple_interface(input_dict):
     StaticVariables.subjects = np.array(range(StaticVariables.num_s))
     StaticVariables.groups = np.array(range(StaticVariables.num_g))
     StaticVariables.p_max = input_dict['p_max']
-    StaticVariables.days = input_dict['d_max']
-    for i in range(StaticVariables.days):
+    StaticVariables.days = range(input_dict['d_max'])
+    StaticVariables.periods = [np.array(range(StaticVariables.p_max)) for _ in range(len(StaticVariables.days))]
+ 
+    for i in StaticVariables.days:
         StaticVariables.periods[i] = [j for j in range(StaticVariables.p_max)]
   
     
@@ -31,6 +33,74 @@ def simple_interface(input_dict):
     x.correctness_implications()
     x.format_result()
     z = Parser([x.graph], [x.true_list])
+    z.compute_result(1)
+
+    return simple_ttable(z.result_graphs[0]['xtsgndp'][True])
+
+def interface(input_dict):
+
+    StaticVariables.duration = input_dict['duration']
+
+    for (t, s, g, n) in StaticVariables.duration.keys():
+        StaticVariables.num_t = max([StaticVariables.num_t, t+1])
+        StaticVariables.num_s = max([StaticVariables.num_s, s+1])
+        StaticVariables.num_g = max([StaticVariables.num_g, g+1])
+
+    StaticVariables.teachers = np.array(range(StaticVariables.num_t))
+    StaticVariables.subjects = np.array(range(StaticVariables.num_s))
+    StaticVariables.groups = np.array(range(StaticVariables.num_g))
+    StaticVariables.p_max = input_dict['p_max']
+    StaticVariables.days = range(input_dict['d_max'])
+    StaticVariables.periods = [np.array(range(StaticVariables.p_max)) for _ in range(len(StaticVariables.days))]
+    for i in StaticVariables.days:
+        StaticVariables.periods[i] = [j for j in range(StaticVariables.p_max)]
+  
+    
+    x = StandardImplications()
+    x.init_vars()
+    x.basic_implications()
+    x.correctness_implications()
+    x.format_result()
+    y = ComfortImplications()
+    y.teacherForbidden(teacher_forbidden0 = input_dict['teacher_forbidden0'],
+                       teacher_forbidden1 = input_dict['teacher_forbidden1'],
+                       teacher_forbidden2 = input_dict['teacher_forbidden2'])
+
+    y.teacherRequested(teacher_requested0 = input_dict['teacher_requested0'],
+                       teacher_requested1 = input_dict['teacher_requested1'],
+                       teacher_requested2 = input_dict['teacher_requested2'])
+
+    y.groupForbidden(group_forbidden0 = input_dict['group_forbidden0'],
+                     group_forbidden1 = input_dict['group_forbidden1'],
+                     group_forbidden2 = input_dict['group_forbidden2'])
+
+    y.groupRequested(group_requested0 = input_dict['group_requested0'],
+                     group_requested1 = input_dict['group_requested1'],
+                     group_requested2 = input_dict['group_requested2'])
+
+    y.overlaps(teacher_overlap = input_dict['teacher_overlap'],
+               teacher_no_overlap = input_dict['teacher_no_overlap'],
+               group_no_overlap = input_dict['group_no_overlap'])
+
+    y.teachingDays(teaching_days = input_dict['teaching_days'])
+
+    y.duration(work_day_duration = input_dict['work_day_duration'],
+               duration_upper_limit = input_dict['duration_upper_limit'],
+               duration_lower_limit = input_dict['duration_lower_limit'])
+
+    y.idleDuration(teacher_max_idle_length = input_dict['teacher_max_idle_length'],
+                   teacher_atmost_one_idle_period = input_dict['teacher_atmost_one_idle_period'],
+                   teacher_atmost_k_idle_period = input_dict['teacher_atmost_k_idle_period'],
+                   group_max_idle_length = input_dict['group_max_idle_length'],
+                   group_atmost_one_idle_period = input_dict['group_atmost_one_idle_period'],
+                   group_atmost_k_idle_period = input_dict['group_atmost_k_idle_period'])
+
+    y.hourSpecification(favoured_hours = input_dict['favoured_hours'],
+                        last_first_hours = input_dict['last_first_hours'])
+
+    y.nonConsecutive(non_consecutive = input_dict['non_consecutive'])
+    
+    z = Parser([x.graph], [x.true_list], [y.comfort_graph], [y.true_list])
     z.compute_result(1)
 
     return simple_ttable(z.result_graphs[0]['xtsgndp'][True])
