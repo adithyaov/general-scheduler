@@ -173,3 +173,14 @@ def compute_bool(*args, **keywords):        #Time table SAT solver
         return (True, s.model())
 
 
+def simple_ttable(truth_tsgndp):
+    
+    ttable = [[[] for i in range(StaticVariables.p_max) ] for i in range(len(StaticVariables.days))]
+    
+    for (t, s, g, n, d, p) in truth_tsgndp:
+        ttable[d][p].append((t, s, g, n))
+    
+    for i in range(len(ttable)):
+        ttable[i].insert(0, "Day {}".format(str(i)))  
+
+    return ttable
