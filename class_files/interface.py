@@ -9,7 +9,7 @@ from tabulate import tabulate
 
 def simple_interface(input_dict):
 
-    StaticVariables.duration = input_dict[duration]
+    StaticVariables.duration = input_dict['duration']
 
     for (t, s, g, n) in StaticVariables.duration.keys():
         StaticVariables.num_t = max([StaticVariables.num_t, t+1])
@@ -18,10 +18,12 @@ def simple_interface(input_dict):
 
     StaticVariables.teachers = np.array(range(StaticVariables.num_t))
     StaticVariables.subjects = np.array(range(StaticVariables.num_s))
-    StaticVariables.groups = np.array(range(StaticVariables.num_g))  
-    StaticVariables.p_max = input_dict(p_max)
-    StaticVariables.days = input_dict(days)
-    StaticVariables.periods = [np.array(range(p_max)) for _ in range(len(days))]
+    StaticVariables.groups = np.array(range(StaticVariables.num_g))
+    StaticVariables.p_max = input_dict['p_max']
+    StaticVariables.days = input_dict['d_max']
+    for i in range(StaticVariables.days):
+        StaticVariables.periods[i] = [j for j in range(StaticVariables.p_max)]
+  
     
     x = StandardImplications()
     x.init_vars()
