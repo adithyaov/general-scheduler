@@ -12,11 +12,11 @@ def conditionInput(incons):
 
 	constraints_dict['num_t'] = int(cons['no_t'])
 
-	constraints_dict['num_s'] = cons['no_s']
+	constraints_dict['num_s'] = int(cons['no_s'])
 	constraints_dict['num_g'] = int(cons['no_g'])
-	constraints_dict['n_max'] = cons['maxNoClass']
-	constraints_dict['p_max'] = cons['no_p']
-	constraints_dict['d_max'] = cons['dow']
+	constraints_dict['n_max'] = int(cons['maxNoClass'])
+	constraints_dict['p_max'] = int(cons['no_p'])
+	constraints_dict['d_max'] = int(cons['dow'])
 
 	comfid = {}
 	comfid['0'] = 'teacher_forbidden0'
@@ -103,5 +103,4 @@ def conditionInput(incons):
 				else:
 					constraints_dict[comfid['24']][(t,s,g,n)] = [int(x['p'])]
 
-	print "conts:-"
-	pprint(constraints_dict)
+	return constraints_dict
