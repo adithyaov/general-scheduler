@@ -1,17 +1,22 @@
+from StaticVariables import *
+from utils import *
+from z3 import * 
+
 class Parser():
     """docstring for Parser"""
 
-    def __init__(self, graph):
+    def __init__(self, graph, true_list):
         self.graph = graph
+        self.true_list = true_list
     
     def compute_result(self, num_results=3):
         result_graphs = {}
+        bool_list = []
+        for i in self.graph:
+            for j in self.graph[i]:
+                bool_list.append(Implies(ParseVal((i, j)), ParseVal(self.graph[i][j])))
 
-        for i in graph:
-            for j in graph[i]:
-                bool_list.append(Implies(ParseVal((i, j)), ParseVal(graph[i][j])))
-
-        bool_list.append(Implies(True, ParseVal(true_list)))
+        bool_list.append(Implies(True, ParseVal(self.true_list)))
 
         for i in range(num_results):
             bool_result = compute_bool(bool_list)

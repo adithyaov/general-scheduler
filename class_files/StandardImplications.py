@@ -1,9 +1,11 @@
 from StaticVariables import *
+from range_constraints import *
+from utils import *
 
 class StandardImplications():
     """docstring for StandardImplications"""
 
-    def __init__(self, duration, days, periods, teachers, subjects, groups):
+    def __init__(self):
         self.true_list = []
         self.graph = {}
 
@@ -51,7 +53,7 @@ class StandardImplications():
 
 
 
-        for k in range(1, p_max + 1): #should it not be from 1 to pmax rather than from 0 to pmax - 1
+        for k in range(1, StaticVariables.p_max + 1): #should it not be from 1 to pmax rather than from 0 to pmax - 1
             # Yes it sould be from 1 to p_max - 1. -- SOLVED
             for t in StaticVariables.teachers:
                 self.graph['ikt'][(k, t)] = []
@@ -62,7 +64,7 @@ class StandardImplications():
                             if bic8(k, d, p):
                                 self.graph['iktdp'][(k, t, d, p)] = []
 
-        for k in range(1, p_max + 1):
+        for k in range(1, StaticVariables.p_max + 1):
             for g in StaticVariables.groups:
                 self.graph['ikg'][(k, g)] = []
                 for d in StaticVariables.days:
@@ -141,13 +143,13 @@ class StandardImplications():
 
         for (t, d) in self.graph['xtd'].keys():
             or_list = []
-            for p in periods[d]:
+            for p in StaticVariables.periods[d]:
                 or_list.append(('xtdp',( t, d, p)))
             self.graph['xtd'][(t, d)].append((StaticVariables.or_head, or_list))
 
         for (t, p) in self.graph['xtp'].keys():
             or_list = []
-            for d in days:
+            for d in StaticVariables.days:
                 if bic3(d, p):
                     or_list.append(('xtdp', (t, d, p)))
             self.graph['xtp'][(t, p)].append((StaticVariables.or_head, or_list))
@@ -160,7 +162,7 @@ class StandardImplications():
                 or_list.append(('xtdp', (t, d, p + j)))
                 self.graph['iktdp'][(k, t, d, p)].append(negation(('xtdp', (t, d, p + j))))
             self.graph['iktdp'][(k, t, d, p)].append(('xtdp', (t, d, p + k)))
-            true_list.append(
+            self.true_list.append(
                 (StaticVariables.or_head, [
                             negation(('xtdp', (t, d, p - 1))),
                             (StaticVariables.or_head, or_list),
@@ -205,7 +207,7 @@ class StandardImplications():
                 or_list.append(('xgdp', (g, d, p + j)))
                 self.graph['ikgdp'][(k, g, d, p)].append(negation(('xgdp', (g, d, p + j))))
             self.graph['ikgdp'][(k, g, d, p)].append(('xgdp', (g, d, p + k)))
-            true_list.append(
+            self.true_list.append(
                 (StaticVariables.or_head, [
                             negation(('xgdp', (g, d, p - 1))),
                             (StaticVariables.or_head, or_list),
