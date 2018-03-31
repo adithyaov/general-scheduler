@@ -20,8 +20,10 @@ def simple_interface(input_dict):
     StaticVariables.subjects = np.array(range(StaticVariables.num_s))
     StaticVariables.groups = np.array(range(StaticVariables.num_g))
     StaticVariables.p_max = input_dict['p_max']
-    StaticVariables.days = input_dict['d_max']
-    for i in range(StaticVariables.days):
+    StaticVariables.days = range(input_dict['d_max'])
+    StaticVariables.periods = [np.array(range(StaticVariables.p_max)) for _ in range(len(StaticVariables.days))]
+ 
+    for i in StaticVariables.days:
         StaticVariables.periods[i] = [j for j in range(StaticVariables.p_max)]
   
     
@@ -48,8 +50,9 @@ def interface(input_dict):
     StaticVariables.subjects = np.array(range(StaticVariables.num_s))
     StaticVariables.groups = np.array(range(StaticVariables.num_g))
     StaticVariables.p_max = input_dict['p_max']
-    StaticVariables.days = input_dict['d_max']
-    for i in range(StaticVariables.days):
+    StaticVariables.days = range(input_dict['d_max'])
+    StaticVariables.periods = [np.array(range(StaticVariables.p_max)) for _ in range(len(StaticVariables.days))]
+    for i in StaticVariables.days:
         StaticVariables.periods[i] = [j for j in range(StaticVariables.p_max)]
   
     
