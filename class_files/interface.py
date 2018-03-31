@@ -100,7 +100,7 @@ def interface(input_dict):
 
     y.nonConsecutive(non_consecutive = input_dict['non_consecutive'])
     
-    z = Parser([x.graph], [x.true_list])
+    z = Parser([x.graph], [x.true_list], [y.comfort_graph], [y.true_list])
     z.compute_result(1)
 
     return simple_ttable(z.result_graphs[0]['xtsgndp'][True])
