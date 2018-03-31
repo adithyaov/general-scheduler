@@ -62,9 +62,12 @@ def interface(input_dict):
     x.correctness_implications()
     x.format_result()
     y = ComfortImplications()
+    print input_dict['teacher_forbidden0']
+    print (not [])
     y.teacher_forbidden(teacher_forbidden0 = input_dict['teacher_forbidden0'],
                        teacher_forbidden1 = input_dict['teacher_forbidden1'],
                        teacher_forbidden2 = input_dict['teacher_forbidden2'])
+    print y.comfort_true_list
 
     y.teacher_requested(teacher_requested0 = input_dict['teacher_requested0'],
                        teacher_requested1 = input_dict['teacher_requested1'],
@@ -99,9 +102,9 @@ def interface(input_dict):
                         last_first_hours = input_dict['last_first_hours'])
 
     y.non_consecutive(non_consecutive = input_dict['non_consecutive'])
-    
+    print y.comfort_true_list
     y.format_result()
-    # print [x.graph, y.comfort_graph], " tru x&y ", [x.true_list, y.comfort_true_list]
+    print y.comfort_true_list
     z = Parser([x.graph, y.comfort_graph], [x.true_list, y.comfort_true_list])
     z.compute_result(1)
 

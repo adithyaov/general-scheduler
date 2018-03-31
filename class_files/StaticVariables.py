@@ -1,4 +1,6 @@
 import numpy as np
+from collections import defaultdict
+
 
 class StaticVariables():
     """docstring for StaticVariables"""
@@ -21,13 +23,11 @@ class StaticVariables():
         (0, 0, 2, 3): 3
     }
 
-    rooms = range(7)
+    rooms = 7
 
     '''
     (t, s, g, n) = [room_set]
     '''
 
-    # room_dict = {
-    #     (t, s, g, n): [1, 2, 3]
-    # }
+    room_dict = {}
 

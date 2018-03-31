@@ -188,3 +188,15 @@ def simple_ttable(truth_tsgndp):
         ttable[i].insert(0, "Day {}".format(str(i)))  
 
     return ttable
+
+def simple_ttable_wr(truth_tsgndpr):
+    
+    ttable = [[[] for i in range(StaticVariables.p_max) ] for i in range(len(StaticVariables.days))]
+    
+    for (t, s, g, n, d, p, r) in truth_tsgndpr:
+        ttable[d][p].append((t, s, g, n, r))
+    
+    for i in range(len(ttable)):
+        ttable[i].insert(0, "Day {}".format(str(i)))  
+
+    return ttable

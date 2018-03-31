@@ -1,30 +1,31 @@
 from StaticVariables import *
+from StandardImplications import *
 
-
-class NaiveRoomAlloc():
+class NaiveRoomAlloc(StandardImplications):
     """docstring for NaiveRoomAlloc"""
     def __init__(self):
-        super(NaiveRoomAlloc, self).__init__()
+        StandardImplications.__init__(self)
         self.graph['x!tsgndpr'] = {}
         self.graph['x!tdpr'] = {}
         self.graph['xtsgndpr'] = {}
         self.graph['xtdpr'] = {}
 
 
-    def form_variables():
+    def room_form_variables(self):
 
         for (t, s, g, n, d, p) in self.graph['x!tsgndp'].keys():
-            for r in StaticVariables.rooms:
+            for r in range(StaticVariables.rooms):
                 if ric1(t, s, g, n, r):
-                    self.room_graph['x!tsgndpr'][(t, s, g, n, d, p, r)] = []
-                    self.room_graph['xtsgndpr'][(t, s, g, n, d, p, r)] = []
+                    self.graph['x!tsgndpr'][(t, s, g, n, d, p, r)] = []
+                    self.graph['xtsgndpr'][(t, s, g, n, d, p, r)] = []
+
 
         for (t, d, p) in self.graph['xtdp'].keys():
-            for r in StaticVariables.rooms:
-                self.room_graph['x!tdpr'][(t, d, p, r)] = []
+            for r in range(StaticVariables.rooms):
+                self.graph['x!tdpr'][(t, d, p, r)] = []
 
 
-    def basic_implications():
+    def room_basic_implications(self):
         for (t, s, g, n, d, p1, r) in self.graph['x!tsgndpr'].keys():
             for p2 in StaticVariables.periods[d]:
                 if ric1(t, s, g, n, r) and bic1(t, s, g, n, d, p1, p2):
@@ -65,7 +66,7 @@ class NaiveRoomAlloc():
             multi_dict[(t, s, g, n, d, p)].append(('x!tsgndpr', (t, s, g, n, d, p, r)))
 
         for (t, s, g, n, d, p) in multi_dict.keys():
-            self.graph['x!tsgndp'].append((or_head, multi_dict[(t, s, g, n, d, p)]))
+            self.graph['x!tsgndp'][(t, s, g, n, d, p)].append((StaticVariables.or_head, multi_dict[(t, s, g, n, d, p)]))
 
 
 
@@ -77,7 +78,7 @@ class NaiveRoomAlloc():
             multi_dict[(t, s, g, n, d, p)].append(('xtsgndpr', (t, s, g, n, d, p, r)))
 
         for (t, s, g, n, d, p) in multi_dict.keys():
-            self.graph['xtsgndp'].append((or_head, multi_dict[(t, s, g, n, d, p)]))
+            self.graph['xtsgndp'][(t, s, g, n, d, p)].append((StaticVariables.or_head, multi_dict[(t, s, g, n, d, p)]))
 
 
 
@@ -89,10 +90,10 @@ class NaiveRoomAlloc():
             multi_dict[(t, d, p)].append(('xtdpr', (t, d, p, r)))
 
         for (t, d, p) in multi_dict.keys():
-            self.graph['xtdp'].append((or_head, multi_dict[(t, d, p)]))
+            self.graph['xtdp'][(t, d, p)].append((StaticVariables.or_head, multi_dict[(t, d, p)]))
 
 
-    def correctness_implications():
+    def room_correctness_implications(self):
 
         multi_dict = {}
         for (t, d, p, r) in self.graph['xtdpr'].keys():

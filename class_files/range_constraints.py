@@ -120,4 +120,4 @@ def ric1(t, s, g, n, r):
     truth = [
         (r in StaticVariables.room_dict[(t, s, g, n)])
     ]
-
+    return np.prod(truth)
