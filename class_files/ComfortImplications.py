@@ -7,15 +7,15 @@ class ComfortImplications():
 
     def __init__(self):
         self.comfort_graph = {}
-        self.comfort_graph['xtdp'] = {}
-        self.comfort_graph['xtsgnd'] = {}
-        self.comfort_graph['x!tsgndp'] = {}
-        self.comfort_graph['xtd'] = {}
-        self.comfort_graph['xtp'] = {}
-        self.comfort_graph['xgdp'] = {}
-        self.comfort_graph['xgd'] = {}
-        self.comfort_graph['xgp'] = {}
-        self.comfort_graph['lkgd'] = {}
+        self.comfort_graph['xtdp'] = defaultdict(lambda: [])
+        self.comfort_graph['xtsgnd'] = defaultdict(lambda: [])
+        self.comfort_graph['x!tsgndp'] = defaultdict(lambda: [])
+        self.comfort_graph['xtd'] = defaultdict(lambda: [])
+        self.comfort_graph['xtp'] = defaultdict(lambda: [])
+        self.comfort_graph['xgdp'] = defaultdict(lambda: [])
+        self.comfort_graph['xgd'] = defaultdict(lambda: [])
+        self.comfort_graph['xgp'] = defaultdict(lambda: [])
+        self.comfort_graph['lkgd'] = defaultdict(lambda: [])
         self.comfort_true_list = []
 
         # StaticVariables.days = []
@@ -24,15 +24,15 @@ class ComfortImplications():
 
     def reset(self):
         self.comfort_graph = {}
-        self.comfort_graph['xtdp'] = {}
-        self.comfort_graph['xtsgnd'] = {}
-        self.comfort_graph['x!tsgndp'] = {}
-        self.comfort_graph['xtd'] = {}
-        self.comfort_graph['xtp'] = {}
-        self.comfort_graph['xgdp'] = {}
-        self.comfort_graph['xgd'] = {}
-        self.comfort_graph['xgp'] = {}
-        self.comfort_graph['lkgd'] = {}
+        self.comfort_graph['xtdp'] = defaultdict(lambda: [])
+        self.comfort_graph['xtsgnd'] = defaultdict(lambda: [])
+        self.comfort_graph['x!tsgndp'] = defaultdict(lambda: [])
+        self.comfort_graph['xtd'] = defaultdict(lambda: [])
+        self.comfort_graph['xtp'] = defaultdict(lambda: [])
+        self.comfort_graph['xgdp'] = defaultdict(lambda: [])
+        self.comfort_graph['xgd'] = defaultdict(lambda: [])
+        self.comfort_graph['xgp'] = defaultdict(lambda: [])
+        self.comfort_graph['lkgd'] = defaultdict(lambda: [])
         self.comfort_true_list = []
 
     def format_result(self):
@@ -171,7 +171,7 @@ class ComfortImplications():
                 atmost_n = Cardinality(atmost_var_list, n)
                 self.comfort_true_list.append(atmost_n.form())
         
-                atleast_n = Cardinality(atleast_var_list, (no_of_days - n))
+                atleast_n = Cardinality(atleast_var_list, (len(StaticVariables.days) - n))
                 self.comfort_true_list.append(atleast_n.form())
 
         return
@@ -200,7 +200,7 @@ class ComfortImplications():
         
         if duration_upper_limit:
             for (g, d, n) in duration_upper_limit:
-                for k in range(n + 1, max(self.periods[d]) + 1):
+                for k in range(n + 1, max(StaticVariables.periods[d]) + 1):
                     self.comfort_true_list.append(negation(('lkgd', (k, g, d))))
         
         # Atleast n hours on day d for group g

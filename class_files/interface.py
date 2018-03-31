@@ -108,6 +108,8 @@ def interface(input_dict):
     z = Parser([x.graph, y.comfort_graph], [x.true_list, y.comfort_true_list])
     z.compute_result(1)
 
+    print z.result_graphs.keys()
+    
     return simple_ttable(z.result_graphs[0]['xtsgndp'][True])
 
 

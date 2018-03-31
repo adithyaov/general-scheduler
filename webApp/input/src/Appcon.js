@@ -409,7 +409,7 @@ class Appcon extends Component {
     {
       case "1": return (<span>Teacher: {this.createTlistComf(cons)} prefers not to be scheduled on day: {this.createDlistComf(cons)} during period: {this.createPlistComf(cons)} </span>);
       case "2": return (<span>Teacher: {this.createTlistComf(cons)} prefers to be scheduled on day: {this.createDlistComf(cons)} during period: {this.createPlistComf(cons)} </span>);
-      case "3": return (<span>Group : {this.createGlistComf(cons)} prefers not to be scheduled on day {this.createDlistComf(cons)} during period {this.createPlistComf(cons)} </span>);
+      case "3": return (<span>Group : {this.createGlistComf(cons)} prefers not to be scheduled on day {this.createDlistComf(cons, 'd', false)} during period {this.createPlistComf(cons, 'p', false)} </span>);
       case "4": return (<span>Group : {this.createGlistComf(cons, "g1")} and Group : {this.createGlistComf(cons, "g2")} prefer not to be scheduled at the same time</span>);
       case "5": return (<span>Techers {this.createTlistComf(cons, "t1")} and {this.createTlistComf(cons, "t2")} prefer not to be scheduled at the same time</span>);
       case "6": return (<span>Techers {this.createTlistComf(cons, "t1")} and {this.createTlistComf(cons, "t2")} prefer to be scheduled at the same time</span>);

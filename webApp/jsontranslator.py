@@ -97,7 +97,7 @@ def conditionInput(incons):
 			t,s,g,n = 0,0,0,0
 			for y in cons['subs']:
 				if(y['id'] == int(x['s'])):
-					t,s,g,n = int(y['t']), int(y['s']), int(y['g']), int(y['n']),
+					t,s,g,n = int(y['t']), int(y['id']), int(y['g']), int(y['n']),
 			if(int(x['mode']) == 1):
 				if (t,s,g,n) in constraints_dict[comfid['24']]:
 					constraints_dict[comfid['24']][(t,s,g,n)].append(int(x['p']))
