@@ -119,6 +119,8 @@ z.compute_result(1)
 print 'x!tsgndp: ', len(z.result_graphs[0]['x!tsgndp'][True]), len(StaticVariables.duration)
 print 'xtsgndp: ', len(z.result_graphs[0]['xtsgndp'][True]), np.sum([x for x in StaticVariables.duration.values()])
 
+print simple_ttable(z.result_graphs[0]['xtsgndp'][True])
+
 from tabulate import tabulate
 
 courses = {}
